@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.core.exceptions import FieldError
 
-from .models import Spot, SkateSpot, BMXSpot, WalkSpot, PicnicSpot, SunsetSpot
+from .models import Spot, SkateSpot, BMXSpot, WalkSpot, PicnicSpot, SunsetSpot, SpotType
 
 
 class SpotSerializer(serializers.ModelSerializer):
@@ -118,4 +118,13 @@ class SunsetSpotSpecificsSerializer(serializers.ModelSerializer):
         model = SunsetSpot
         fields = (
             'seating',
+        )
+
+
+class SpotTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SpotType
+        fields = (
+            'spot_name',
+            'display_name',
         )
