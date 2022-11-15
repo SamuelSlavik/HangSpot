@@ -5,6 +5,13 @@ from userauth.models import User
 
 # Create your models here.
 class Spot(models.Model):
+    class _SpotTypes(models.TextChoices):
+        SKATEBOARD = 'skateboard', 'Skateboard'
+        BMX = 'bmx', 'BMX'
+        WALK = 'walk', 'Walk'
+        PICNIC = 'picnic', 'Picnic'
+        SUNSET = 'sunset', 'Sunset'
+
     id = models.BigAutoField(primary_key=True)
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True, default=None)
@@ -17,6 +24,7 @@ class Spot(models.Model):
     reports = models.ManyToManyField(to=User, related_name='reports')
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE)
     seen_by = models.ManyToManyField(to=User, related_name='seen_spots')
+    spot_type = models.CharField(max_length=255, choices=_SpotTypes.choices)
 
     def __str__(self):
         return self.name
