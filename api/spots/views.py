@@ -20,5 +20,8 @@ class SpotFilterTypeListView(generics.ListAPIView):
 
 
 class SpotTypeListView(generics.ListAPIView):
-    queryset = SpotType.objects.all()
-    serializer_class = SpotSerializer
+    serializer_class = SpotTypeSerializer
+
+    def get_queryset(self):
+        print("hello")
+        return SpotType.objects.all()

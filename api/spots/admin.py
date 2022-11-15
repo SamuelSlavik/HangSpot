@@ -7,10 +7,12 @@ from .models import (
     BMXSpotType,
     WalkSpot,
     PicnicSpot,
-    SunsetSpot
+    SunsetSpot,
+    SpotType
 )
 
 # Register your models here.
+admin.site.register(SpotType)
 admin.site.register(SkateSpot)
 admin.site.register(SkateSpotType)
 admin.site.register(BMXSpot)

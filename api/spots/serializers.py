@@ -125,6 +125,6 @@ class SpotTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = SpotType
         fields = (
-            'spot_name',
+            'type_name',
             'display_name',
         )
