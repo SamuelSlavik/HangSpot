@@ -1,0 +1,19 @@
+@import "assets/style/helpers/variables";
+
+// Mixins
+@import "assets/style/mixins/transitions-mixin";
+@import "assets/style/mixins/list-mixin";
+
+// Default style
+@import "assets/style/default";
+
+// Components
+
+
+// Layout
+@import "assets/style/layout/navigation";
+
+// Pages
+@import "assets/style/pages/homepage";
+
+
