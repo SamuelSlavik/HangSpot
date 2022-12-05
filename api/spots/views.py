@@ -16,7 +16,7 @@ class SpotFilterTypeListView(generics.ListAPIView):
 
     def get_queryset(self):
         spot_type = self.kwargs['spot_type']
-        return Spot.objects.filter(spot_type=spot_type)
+        return Spot.objects.filter(spot_type__type_name=spot_type)
 
 
 class SpotTypeListView(generics.ListAPIView):
