@@ -10,7 +10,7 @@ class SpotType(models.Model):
     display_name = models.CharField(max_length=255)
 
 
-class Spot(models.Model):
+class SpotCommon(models.Model):
     id = models.BigAutoField(primary_key=True)
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True, default=None)
@@ -33,7 +33,7 @@ class Spot(models.Model):
 
 
 class SpotImage(models.Model):
-    spot = models.ForeignKey(to=Spot, on_delete=models.CASCADE)
+    spot = models.ForeignKey(to=SpotCommon, on_delete=models.CASCADE)
     image = models.ImageField()
 
 
@@ -41,7 +41,7 @@ class SkateSpotType(models.Model):
     type_name = models.CharField(max_length=255, primary_key=True, unique=True)
 
 
-class SkateSpot(Spot):
+class SkateSpot(SpotCommon):
     type = models.ManyToManyField(to=SkateSpotType, related_name='skate_spots', blank=True)
     guarded = models.BooleanField(default=False)
     guard_free_time = models.TimeField(blank=True, null=True, default=None)
@@ -54,7 +54,7 @@ class BMXSpotType(models.Model):
     type_name = models.CharField(max_length=255, primary_key=True, unique=True)
 
 
-class BMXSpot(Spot):
+class BMXSpot(SpotCommon):
     type = models.ManyToManyField(to=BMXSpotType, related_name='bmx_spots', blank=True)
     guarded = models.BooleanField(default=False)
     guard_free_time = models.TimeField(blank=True, null=True, default=None)
@@ -63,15 +63,20 @@ class BMXSpot(Spot):
     close_time = models.TimeField(blank=True, null=True, default=None)
 
 
-class WalkSpot(Spot):
+class WalkSpot(SpotCommon):
     expected_duration = models.FloatField(null=True, default=None)
     path_description = models.TextField(blank=True, null=True, default=None)
 
 
-class PicnicSpot(Spot):
+class PicnicSpot(SpotCommon):
     seating_provided = models.BooleanField(default=False)
 
 
-class SunsetSpot(Spot):
+class SunsetSpot(SpotCommon):
     seating = models.BooleanField(default=False)
+
+
+class Spot(models.Model):
+    id = models.BigAutoField(primary_key=True)
+
 
