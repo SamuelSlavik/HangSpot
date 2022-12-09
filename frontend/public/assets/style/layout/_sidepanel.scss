@@ -1,0 +1,123 @@
+.sidepanel {
+  width: 500px;
+  position: fixed;
+  bottom: 0;
+  top: 0;
+  right: 0;
+  overflow: hidden;
+  background: $white;
+  z-index: 999;
+  -webkit-transform: translateX(100%);
+  -ms-transform: translateX(100%);
+  transform: translateX(100%);
+  transition: all 0.3s linear;
+  -webkit-transition: all 0.3s linear;
+  -moz-transition: all 0.3s linear;
+  -o-transition: all 0.3s linear;
+  -ms-transition: all 0.3s linear;
+  color: $black;
+
+  &__content {
+    padding: 10% 10% 10% 10%;
+
+    input {
+      width: 100%;
+      border: none;
+      outline: none;
+      background-color: $white;
+      color: $black;
+      border-bottom: solid 1px $black;
+      padding: 2%;
+      margin-bottom: 7%;
+      font-size: 1em;
+      @include transition-default;
+
+      &:hover {
+        border-color: $color;
+      }
+      &:focus {
+        border-color: $color;
+      }
+      &:user-invalid {
+        background-color: #FF0000;
+      }
+    }
+
+    .sidepanel__checkbox {
+      display: none;
+    }
+    input[type=checkbox]+label {
+      padding: 10px 0 10px 0;
+      display: block;
+      @include transition-fast;
+
+      &:hover {
+        cursor: pointer;
+        color: $color;
+      }
+    }
+    input[type=checkbox]:checked+label {
+      color: $color;
+      font-weight: bold;
+    }
+  }
+}
+.sidepanel__overlay {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.3s linear;
+  -webkit-transition: all 0.3s linear;
+  -moz-transition: all 0.3s linear;
+  -o-transition: all 0.3s linear;
+  -ms-transition: all 0.3s linear;
+  z-index: -1;
+  background: rgba(0, 0, 0, 0.4);
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+.sidepanel__off {
+  color: $white !important;
+}
+.sidepanel__off:hover {
+  color: $white;
+  cursor: pointer;
+}
+.sidepanel-content {
+  width: 100%;
+  padding: 5%;
+}
+.sidepanel__top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10%;
+}
+.sidepanel__top img {
+  height: auto;
+  width: 50%;
+}
+.sidepanel-content a:hover {
+  color: $white !important;
+}
+.sidepanel__gallery {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 5%;
+}
+.sidepanel__gallery a {
+  width: 31%;
+  height: auto;
+  margin-bottom: 2%;
+}
+.sidepanel__gallery a img {
+  width: 100%;
+  height: auto;
+}

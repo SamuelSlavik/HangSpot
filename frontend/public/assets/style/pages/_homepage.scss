@@ -1,0 +1,41 @@
+.homepage {
+  width: 100vw;
+  height: 100vh;
+  background-color: $dark-gray;
+  padding: 0;
+  margin: 0;
+  display: block;
+
+  .games-link {
+    display: block;
+    padding: 1%;
+    background-color: $orange;
+    border-radius: 50%;
+    color: $white;
+    position: absolute;
+    bottom: 5%;
+    left: 5%;
+    * {
+      display: block;
+      padding: 0;
+      margin: 0;
+    }
+  }
+
+  .filter-link {
+    display: block;
+    padding: 1%;
+    background-color: $orange;
+    border-radius: 50%;
+    color: $white;
+    position: absolute;
+    bottom: 5%;
+    right: 5%;
+
+    * {
+      display: block;
+      padding: 0;
+      margin: 0;
+    }
+  }
+}
