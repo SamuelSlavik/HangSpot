@@ -8,10 +8,10 @@
 @import "assets/style/default";
 
 // Components
-
-
+@import "assets/style/components/buttons";
 // Layout
 @import "assets/style/layout/navigation";
+@import "assets/style/layout/sidepanel";
 
 // Pages
 @import "assets/style/pages/homepage";
