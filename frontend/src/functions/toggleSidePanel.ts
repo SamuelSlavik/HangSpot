@@ -5,7 +5,7 @@ export function toggleSidePanelOn() {
   if (container && overlay) {
     container.style.transform = "none"
     overlay.style.visibility = "visible"
-    overlay.style.zIndex = "998"
+    overlay.style.zIndex = "8"
     overlay.style.opacity = "1"
   }
 }

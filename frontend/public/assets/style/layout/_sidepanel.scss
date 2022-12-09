@@ -6,7 +6,7 @@
   right: 0;
   overflow: hidden;
   background: $white;
-  z-index: 999;
+  z-index: 9;
   -webkit-transform: translateX(100%);
   -ms-transform: translateX(100%);
   transform: translateX(100%);
@@ -83,7 +83,10 @@
   }
 }
 .sidepanel__off {
-  color: $white !important;
+  color: $orange !important;
+  position: absolute;
+  bottom: 5%;
+  right: 5%;
 }
 .sidepanel__off:hover {
   color: $white;
@@ -104,20 +107,4 @@
 }
 .sidepanel-content a:hover {
   color: $white !important;
-}
-.sidepanel__gallery {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  margin-bottom: 5%;
-}
-.sidepanel__gallery a {
-  width: 31%;
-  height: auto;
-  margin-bottom: 2%;
-}
-.sidepanel__gallery a img {
-  width: 100%;
-  height: auto;
 }
