@@ -39,3 +39,13 @@ class UserDestroyView(generics.DestroyAPIView):
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+
+class UserCurrentUserView(generics.RetrieveAPIView):
+    """
+    Gets currently logged-in user
+    """
+    serializer_class = UserSerializer
+
+    def get_queryset(self):
+        return User.objects.get(self.request.user)
