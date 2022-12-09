@@ -3,6 +3,11 @@ import {NavLink, Link} from "react-router-dom";
 
 import css from "*.scss";
 
+import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined';
+import {SvgIcon} from "@mui/material";
+
+import {toggleSidePanelOff} from "../functions/toggleSidePanel";
+
 
 function SidePanel(): JSX.Element {
   //const [allTags, setAllTags] = useState<Tags[]>([])
@@ -44,7 +49,11 @@ function SidePanel(): JSX.Element {
             ))
           */}
         </div>
-
+        <div className={"sidepanel__off"}>
+          <a onClick={toggleSidePanelOff}>
+            <SvgIcon component={ArrowForwardOutlinedIcon} fontSize={"large"}/>
+          </a>
+        </div>
       </div>
     </div>
   )

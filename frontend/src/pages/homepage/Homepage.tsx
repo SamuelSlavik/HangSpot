@@ -15,6 +15,8 @@ import SidePanel from "../../components/SidePanel";
 function Homepage():JSX.Element {
   return (
     <div className={"homepage"}>
+      <SidePanel />
+
       <div className={"map-wrapper"}>
         here will be map
       </div>
@@ -28,7 +30,6 @@ function Homepage():JSX.Element {
           <SvgIcon component={SportsEsportsOutlinedIcon} fontSize={"large"}/>
         </Link>
       </div>
-      <SidePanel />
     </div>
   )
 }
