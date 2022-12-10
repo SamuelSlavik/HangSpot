@@ -1,5 +1,5 @@
 import React from "react";
-import {NavLink, Link} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 
 // ICONS //
 import PushPinOutlinedIcon from '@mui/icons-material/PushPinOutlined';
@@ -14,11 +14,10 @@ function Navigation():JSX.Element {
         <NavLink to={"/"} ><SvgIcon component={PushPinOutlinedIcon} fontSize={"large"}/></NavLink>
       </div>
       <div className={"navigation__search"}>
-        <NavLink to={"/about"} >O Wydrách</NavLink>
+        <NavLink to={"/about"} >Search</NavLink>
       </div>
       <div className={"navigation__links"}>
         <NavLink to={"/createPost"} ><SvgIcon component={AddOutlinedIcon} fontSize={"large"}/></NavLink>
-        <NavLink to={"/login"} ><SvgIcon component={PersonOutlineOutlinedIcon} fontSize={"large"}/></NavLink>
         <NavLink to={"/profile"} ><SvgIcon component={PersonOutlineOutlinedIcon} fontSize={"large"}/></NavLink>
       </div>
     </div>
