@@ -8,6 +8,7 @@ import UserContext from "./context/userContext";
 import {toggleSidePanelOff} from "./functions/toggleSidePanel";
 import Login from "./pages/user/Login";
 import Profile from "./pages/user/Profile";
+import GamesMenu from "./pages/games/GamesMenu";
 
 function App() {
   // User context
@@ -32,6 +33,10 @@ function App() {
           <Route
             path={"/profile"}
             element={<Profile/>}
+          />
+          <Route
+            path={"/games"}
+            element={<GamesMenu/>}
           />
         </Routes>
       </UserContext.Provider>

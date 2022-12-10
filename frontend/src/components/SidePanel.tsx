@@ -27,7 +27,7 @@ function SidePanel(): JSX.Element {
 
               <div key={id}>
                 <input
-                  type={"checkbox"}
+                  type={"radio"}
                   id={"tag" + id}
                   className={"sidepanel__checkbox"}
                   checked={(searchTags.some(((i:number) => i ==id)))}
@@ -59,4 +59,5 @@ function SidePanel(): JSX.Element {
   )
 }
 
+// skate, walk, bmx, picnic, sunset
 export default SidePanel

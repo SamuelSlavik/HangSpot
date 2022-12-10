@@ -1,8 +1,7 @@
 import React, {useEffect} from 'react';
 import {Link} from "react-router-dom";
 
-import { useMemo } from "react";
-import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
+import {useLoadScript} from "@react-google-maps/api";
 
 import {toggleSidePanelOn} from "../../functions/toggleSidePanel";
 
