@@ -4,7 +4,6 @@ from .views import (
     UserCreateView,
     UserRetrieveUpdateView,
     UserDestroyView,
-    UserCurrentUserView,
     TokenObtainPairUserView,
     TokenRefreshUserView,
 )
@@ -19,5 +18,4 @@ urlpatterns = [
     path('create/', UserCreateView.as_view(), name='users_create'),
     path('get/<str:pk>/', UserRetrieveUpdateView.as_view(), name='users_retrieve_update'),
     path('destroy/<str:pk>/', UserDestroyView.as_view(), name='users_destroy'),
-    path('current/', UserCurrentUserView.as_view(), name='users_current'),
 ]

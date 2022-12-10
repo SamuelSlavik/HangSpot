@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework import generics
+from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import AccessToken
 from rest_framework_simplejwt.views import (
@@ -59,20 +60,3 @@ class TokenObtainPairUserView(TokenObtainPairView):
 
 class TokenRefreshUserView(TokenRefreshView):
     serializer_class = TokenRefreshSerializer
-
-
-class UserCurrentUserView(generics.RetrieveAPIView):
-    """
-    Gets currently logged-in user
-    """
-    permission_classes = [
-        IsAuthenticated,
-    ]
-    serializer_class = UserSerializer
-    queryset = User.objects.all()
-
-    def get(self, request, *args, **kwargs):
-        token = request.data.get('token')
-        user_id = AccessToken(token)
-        user = self.queryset.get(id=user_id)
-        return self.serializer_class(user).data
