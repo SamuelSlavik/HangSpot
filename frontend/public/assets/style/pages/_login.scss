@@ -1,0 +1,40 @@
+.login {
+  width: 100%;
+  padding: 20% 15%;
+
+  input {
+    width: 50%;
+    margin-left: 25%;
+    margin-bottom: 5%;
+    padding: 1.5% 1% 1.5% 1%;
+    text-align: center;
+    border-radius: 5px;
+    outline: none;
+    border: solid 2px $light-gray;
+    background-color: $white;
+    color: $black;
+    @include transition-fast;
+
+    &:hover, &:active, &:focus {
+      border-color: $orange;
+    }
+  }
+  .submit {
+    width: 50%;
+    margin-left: 25%;
+    margin-bottom: 5%;
+    padding: 2% 1% 2% 1%;
+    text-align: center;
+    border-radius: 5px;
+    outline: none;
+    border: solid 2px $orange;
+    background-color: $orange;
+    color: $white;
+    @include transition-fast;
+
+    &:hover, &:active, &:focus {
+      border-color: $orange;
+      cursor: pointer;
+    }
+  }
+}
