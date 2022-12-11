@@ -4,12 +4,66 @@ from django.core.exceptions import FieldError
 from .models import SpotCommon, SkateSpot, BMXSpot, WalkSpot, PicnicSpot, SunsetSpot, SpotType
 
 
+
+
+
+class SkateSpotSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SkateSpot
+        fields = '__all__'
+
+
+class BMXSpotSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BMXSpot
+        fields = '__all__'
+
+
+class WalkSpotSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WalkSpot
+        fields = '__all__'
+
+
+class PicnicSpotSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PicnicSpot
+        fields = '__all__'
+
+
+class SunsetSpotSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SunsetSpot
+        fields = '__all__'
+
+
+class SpotTypeSerializer(serializers.ModelSerializer):
+    type_serializers = {
+        'skateboard': SkateSpotSerializer,
+        'bmx': BMXSpotSerializer,
+        'walk': WalkSpotSerializer,
+        'picnic': PicnicSpotSerializer,
+        'sunset': SunsetSpotSerializer,
+    }
+
+    class Meta:
+        model = SpotType
+        fields = (
+            'type_name',
+            'display_name',
+        )
+
+    def get_spot_serializer_class(self):
+        for key, cls in self.type_serializers:
+            if key == self.data.get('type_name'):
+                return cls
+        return None
+
+
 class SpotSerializer(serializers.ModelSerializer):
-    skate_spot_info = serializers.SerializerMethodField()
-    bmx_spot_info = serializers.SerializerMethodField()
-    walk_spot_info = serializers.SerializerMethodField()
-    picnic_spot_info = serializers.SerializerMethodField()
-    sunset_spot_info = serializers.SerializerMethodField()
+    id = serializers.ReadOnlyField()
+    spot_type = SpotTypeSerializer()
+    type_specific_data = serializers.SerializerMethodField()
 
     class Meta:
         model = SpotCommon
@@ -27,47 +81,36 @@ class SpotSerializer(serializers.ModelSerializer):
             'reports',
             'seen_by',
             'spot_type',
-            'skate_spot_info',
-            'bmx_spot_info',
-            'walk_spot_info',
-            'picnic_spot_info',
-            'sunset_spot_info',
+            'type_specific_data',
         )
 
-    @staticmethod
-    def get_skate_spot_info(obj):
+    def get_type_specific_data(self, obj):
         try:
-            return SkateSpotSpecificsSerializer(SkateSpot.objects.get(spot_ptr_id=obj.id)).data
-        except (FieldError, SkateSpot.DoesNotExist):
-            return None
-
-    @staticmethod
-    def get_bmx_spot_info(obj):
+            data = obj.skatespot
+            return SkateSpotSpecificsSerializer(data).data
+        except SkateSpot.DoesNotExist:
+            pass
         try:
-            return BMXSpotSpecificsSerializer(BMXSpot.objects.get(spot_ptr_id=obj.id)).data
-        except (FieldError, BMXSpot.DoesNotExist):
-            return None
-
-    @staticmethod
-    def get_walk_spot_info(obj):
+            data = obj.bmxspot
+            return BMXSpotSpecificsSerializer(data).data
+        except BMXSpot.DoesNotExist:
+            pass
         try:
-            return WalkSpotSpecificsSerializer(WalkSpot.objects.get(spot_ptr_id=obj.id)).data
-        except (FieldError, WalkSpot.DoesNotExist):
-            return None
-
-    @staticmethod
-    def get_picnic_spot_info(obj):
+            data = obj.walkspot
+            return WalkSpotSpecificsSerializer(data).data
+        except WalkSpot.DoesNotExist:
+            pass
         try:
-            return PicnicSpotSpecificsSerializer(PicnicSpot.objects.get(spot_ptr_id=obj.id)).data
-        except (FieldError, PicnicSpot.DoesNotExist):
-            return None
-
-    @staticmethod
-    def get_sunset_spot_info(obj):
+            data = obj.picnicspot
+            return PicnicSpotSpecificsSerializer(data).data
+        except PicnicSpot.DoesNotExist:
+            pass
         try:
-            return SunsetSpotSpecificsSerializer(SunsetSpot.objects.get(spot_ptr_id=obj.id)).data
-        except (FieldError, SunsetSpot.DoesNotExist):
-            return None
+            data = obj.sunsetspot
+            return SunsetSpotSpecificsSerializer(data).data
+        except SunsetSpot.DoesNotExist:
+            pass
+        return None
 
 
 class SkateSpotSpecificsSerializer(serializers.ModelSerializer):
@@ -79,7 +122,7 @@ class SkateSpotSpecificsSerializer(serializers.ModelSerializer):
             'open_alltime',
             'open_time',
             'close_time',
-            'type',
+            'specific_type',
         )
 
 
@@ -92,7 +135,7 @@ class BMXSpotSpecificsSerializer(serializers.ModelSerializer):
             'open_alltime',
             'open_time',
             'close_time',
-            'type',
+            'specific_type',
         )
 
 
@@ -118,13 +161,4 @@ class SunsetSpotSpecificsSerializer(serializers.ModelSerializer):
         model = SunsetSpot
         fields = (
             'seating',
-        )
-
-
-class SpotTypeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = SpotType
-        fields = (
-            'type_name',
-            'display_name',
         )

@@ -5,9 +5,14 @@ from userauth.models import User
 
 # Create your models here.
 class SpotType(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    type_name = models.CharField(max_length=255, unique=True)
+    type_name = models.CharField(max_length=255, unique=True, primary_key=True)
     display_name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.display_name
+
+    def __repr__(self):
+        return self.type_name
 
 
 class SpotCommon(models.Model):
@@ -23,7 +28,7 @@ class SpotCommon(models.Model):
     reports = models.ManyToManyField(to=User, related_name='reports', blank=True)
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE)
     seen_by = models.ManyToManyField(to=User, related_name='seen_spots', blank=True)
-    spot_type = models.ForeignKey(to=SpotType, on_delete=models.CASCADE, to_field='id')
+    spot_type = models.ForeignKey(to=SpotType, on_delete=models.CASCADE, to_field='type_name')
 
     def __str__(self):
         return self.name
@@ -42,7 +47,7 @@ class SkateSpotType(models.Model):
 
 
 class SkateSpot(SpotCommon):
-    type = models.ManyToManyField(to=SkateSpotType, related_name='skate_spots', blank=True)
+    specific_type = models.ManyToManyField(to=SkateSpotType, related_name='skate_spots', blank=True)
     guarded = models.BooleanField(default=False)
     guard_free_time = models.TimeField(blank=True, null=True, default=None)
     open_alltime = models.BooleanField(default=True)
@@ -55,7 +60,7 @@ class BMXSpotType(models.Model):
 
 
 class BMXSpot(SpotCommon):
-    type = models.ManyToManyField(to=BMXSpotType, related_name='bmx_spots', blank=True)
+    specific_type = models.ManyToManyField(to=BMXSpotType, related_name='bmx_spots', blank=True)
     guarded = models.BooleanField(default=False)
     guard_free_time = models.TimeField(blank=True, null=True, default=None)
     open_alltime = models.BooleanField(default=True)
@@ -74,9 +79,5 @@ class PicnicSpot(SpotCommon):
 
 class SunsetSpot(SpotCommon):
     seating = models.BooleanField(default=False)
-
-
-class Spot(models.Model):
-    id = models.BigAutoField(primary_key=True)
 
 
