@@ -1,3 +1,8 @@
-npm install @mui/icons-material @mui/material @emotion/styled @emotion/react
+@mui/icons-material
+@mui/material
+@emotion/styled
+@emotion/react
 
-npm install axios
+axios
+
+@react-google-maps/api
