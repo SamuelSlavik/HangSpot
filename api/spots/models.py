@@ -76,7 +76,3 @@ class SunsetSpot(SpotCommon):
     seating = models.BooleanField(default=False)
 
 
-class Spot(models.Model):
-    id = models.BigAutoField(primary_key=True)
-
-
