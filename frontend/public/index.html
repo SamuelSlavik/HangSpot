@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" type="text/css" href="/style.css"/>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="author" content="Samuel Slávik"/>
+  <meta name="author" content="Adam Pekný"/>
+  <meta name="author" content="Jakub Kontrík"/>
+  <meta
+          name="description"
+          content="To do"
+  />
+  <title>Hangspot</title>
+
+  <!--------- ICONS ------------------->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <!------------ ANIMATIONS --------------------->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+  <!---------- FONTS, linked from google fonts --------->
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&display=swap" rel="stylesheet">
+
+</head>
+<body>
+<noscript>You need to enable JavaScript to run this app.</noscript>
+<div id="root"></div>
+
+<!------------ Loading Screen -->
+<div id="overlay">
+  <div id="progstat"></div>
+  <div id="progress"></div>
+</div>
+
+<!--------------- SCRIPTS ------------------->
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script>
+  AOS.init({
+    once: true,
+    duration: 800,
+    disable: function () {
+      let maxWidth = 1170;
+      return window.innerWidth < maxWidth;
+    }
+  });
+</script>
+
+</body>
+</html>
