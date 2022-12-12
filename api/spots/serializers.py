@@ -4,9 +4,6 @@ from django.core.exceptions import FieldError
 from .models import SpotCommon, SkateSpot, BMXSpot, WalkSpot, PicnicSpot, SunsetSpot, SpotType
 
 
-
-
-
 class SkateSpotSerializer(serializers.ModelSerializer):
     class Meta:
         model = SkateSpot
@@ -54,7 +51,7 @@ class SpotTypeSerializer(serializers.ModelSerializer):
         )
 
     def get_spot_serializer_class(self):
-        for key, cls in self.type_serializers:
+        for key, cls in self.type_serializers.items():
             if key == self.data.get('type_name'):
                 return cls
         return None
