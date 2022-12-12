@@ -133,3 +133,34 @@ class LikeSpotView(generics.RetrieveUpdateAPIView):
         user_in = spot.likes.filter(id=request.user.id).exists()
         return Response({'likes': spot.likes.count(), 'user_in': user_in})
 
+
+class ReportSpotView(generics.RetrieveUpdateAPIView):
+    queryset = SpotCommon.objects.all()
+    serializer_class = SpotCommonSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def update(self, request, *args, **kwargs):
+        spot = self.get_object()
+        spot.reports.add(request.user)
+        return Response({'reports': spot.reports.count(), 'user_in': True})
+
+    def retrieve(self, request, *args, **kwargs):
+        spot = self.get_object()
+        user_in = spot.reports.filter(id=request.user.id).exists()
+        return Response({'reports': spot.reports.count(), 'user_in': user_in})
+
+
+class DisplaySpotView(generics.RetrieveUpdateAPIView):
+    queryset = SpotCommon.objects.all()
+    serializer_class = SpotCommonSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def update(self, request, *args, **kwargs):
+        spot = self.get_object()
+        spot.displays.add(request.user)
+        return Response({'displays': spot.displays.count()})
+
+    def retrieve(self, request, *args, **kwargs):
+        spot = self.get_object()
+        return Response({'displays': spot.displays.count()})
+
