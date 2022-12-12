@@ -38,8 +38,8 @@ class SpotCommon(models.Model):
 
 
 class SpotImage(models.Model):
-    spot = models.ForeignKey(to=SpotCommon, on_delete=models.CASCADE)
-    image = models.ImageField()
+    spot = models.ForeignKey(to=SpotCommon, on_delete=models.CASCADE, related_name='images')
+    image = models.ImageField(upload_to='spot_images/')
 
 
 class SkateSpotType(models.Model):
@@ -49,7 +49,8 @@ class SkateSpotType(models.Model):
 class SkateSpot(SpotCommon):
     specific_type = models.ManyToManyField(to=SkateSpotType, related_name='skate_spots', blank=True)
     guarded = models.BooleanField(default=False)
-    guard_free_time = models.TimeField(blank=True, null=True, default=None)
+    guard_free_from = models.TimeField(blank=True, null=True, default=None)
+    guard_free_till = models.TimeField(blank=True, null=True, default=None)
     open_alltime = models.BooleanField(default=True)
     open_time = models.TimeField(blank=True, null=True, default=None)
     close_time = models.TimeField(blank=True, null=True, default=None)
@@ -62,14 +63,15 @@ class BMXSpotType(models.Model):
 class BMXSpot(SpotCommon):
     specific_type = models.ManyToManyField(to=BMXSpotType, related_name='bmx_spots', blank=True)
     guarded = models.BooleanField(default=False)
-    guard_free_time = models.TimeField(blank=True, null=True, default=None)
+    guard_free_from = models.TimeField(blank=True, null=True, default=None)
+    guard_free_till = models.TimeField(blank=True, null=True, default=None)
     open_alltime = models.BooleanField(default=True)
     open_time = models.TimeField(blank=True, null=True, default=None)
     close_time = models.TimeField(blank=True, null=True, default=None)
 
 
 class WalkSpot(SpotCommon):
-    expected_duration = models.FloatField(null=True, default=None)
+    expected_duration = models.FloatField(blank=True, null=True, default=None)
     path_description = models.TextField(blank=True, null=True, default=None)
 
 
@@ -78,6 +80,6 @@ class PicnicSpot(SpotCommon):
 
 
 class SunsetSpot(SpotCommon):
-    seating = models.BooleanField(default=False)
+    seating_provided = models.BooleanField(default=False)
 
 

@@ -1,9 +1,10 @@
 from itertools import chain
 
 from django.http.response import JsonResponse
+from rest_framework import permissions
 
 from rest_framework import generics
-from rest_framework.exceptions import NotFound
+from rest_framework.exceptions import NotFound, NotAuthenticated
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
 from rest_framework.decorators import api_view
@@ -12,6 +13,7 @@ from .models import SpotCommon, SkateSpot, BMXSpot, WalkSpot, PicnicSpot, Sunset
 from .serializers import (
     SpotSerializer,
     SpotTypeSerializer,
+    SpotCommonSerializer,
 )
 
 
@@ -29,8 +31,10 @@ def spot_create_view(request, *args, **kwargs):
     """
     Creates spot
     """
+    if not request.user.is_authenticated:
+        raise NotAuthenticated()
     if request.method == 'POST':
-        data = request.POST
+        data = request.data
         type_name = data.get('spot_type')
         try:
             type_serializer = SpotTypeSerializer(SpotType.objects.get(pk=type_name))
@@ -48,6 +52,8 @@ def spot_create_view(request, *args, **kwargs):
 
 # TODO enable updating spot type
 class SpotRetrieveUpdateView(generics.RetrieveUpdateAPIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
     def get_serializer_class(self):
         try:
             spot_type = SpotCommon.objects.get(pk=self.kwargs['pk']).spot_type
@@ -91,7 +97,16 @@ class SpotFilterTypeListView(generics.ListAPIView):
         return SpotCommon.objects.filter(spot_type__type_name=spot_type)
 
 
+class SpotFilterUserListView(generics.ListAPIView):
+    serializer_class = SpotSerializer
+
+    def get_queryset(self):
+        user_id = self.kwargs['user_id']
+        return SpotCommon.objects.filter(owner_id=user_id)
+
+
 class SpotDestroyView(generics.DestroyAPIView):
+    permission_classes = [permissions.IsAuthenticated]
     queryset = SpotCommon.objects.all()
     serializer_class = SpotSerializer
 
@@ -101,3 +116,20 @@ class SpotTypeListView(generics.ListAPIView):
 
     def get_queryset(self):
         return SpotType.objects.all()
+
+
+class LikeSpotView(generics.RetrieveUpdateAPIView):
+    queryset = SpotCommon.objects.all()
+    serializer_class = SpotCommonSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def update(self, request, *args, **kwargs):
+        spot = self.get_object()
+        spot.likes.add(request.user)
+        return Response({'likes': spot.likes.count(), 'user_in': True})
+
+    def retrieve(self, request, *args, **kwargs):
+        spot = self.get_object()
+        user_in = spot.likes.filter(id=request.user.id).exists()
+        return Response({'likes': spot.likes.count(), 'user_in': user_in})
+
