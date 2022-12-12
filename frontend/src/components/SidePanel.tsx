@@ -12,7 +12,6 @@ import {toggleSidePanelOff} from "../functions/toggleSidePanel";
 import axios from "axios";
 import {Type} from "../types/interfaces";
 
-
 function SidePanel(): JSX.Element {
   const {searchType, setSearchType} = useContext(SearchContext)
 
