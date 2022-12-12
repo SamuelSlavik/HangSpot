@@ -2,6 +2,7 @@ from rest_framework import serializers
 from django.core.exceptions import FieldError
 
 from .models import SpotCommon, SkateSpot, BMXSpot, WalkSpot, PicnicSpot, SunsetSpot, SpotType
+from userauth.serializers import UserSerializer
 
 
 class SkateSpotSerializer(serializers.ModelSerializer):
@@ -61,6 +62,10 @@ class SpotSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
     spot_type = SpotTypeSerializer()
     type_specific_data = serializers.SerializerMethodField()
+    likes = serializers.SerializerMethodField()
+    reports = serializers.SerializerMethodField()
+    seen_by = serializers.SerializerMethodField()
+    owner = UserSerializer()
 
     class Meta:
         model = SpotCommon
@@ -81,7 +86,20 @@ class SpotSerializer(serializers.ModelSerializer):
             'type_specific_data',
         )
 
-    def get_type_specific_data(self, obj):
+    @staticmethod
+    def get_likes(obj):
+        return obj.likes.count()
+
+    @staticmethod
+    def get_reports(obj):
+        return obj.reports.count()
+
+    @staticmethod
+    def get_seen_by(obj):
+        return obj.reports.count()
+
+    @staticmethod
+    def get_type_specific_data(obj):
         try:
             data = obj.skatespot
             return SkateSpotSpecificsSerializer(data).data
