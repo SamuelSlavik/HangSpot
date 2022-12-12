@@ -43,21 +43,21 @@
       }
     }
 
-    .sidepanel__checkbox {
+    .sidepanel__radio {
       display: none;
     }
-    input[type=checkbox]+label {
+    input[type=radio]+label {
       padding: 10px 0 10px 0;
       display: block;
       @include transition-fast;
 
       &:hover {
         cursor: pointer;
-        color: $color;
+        color: $orange;
       }
     }
-    input[type=checkbox]:checked+label {
-      color: $color;
+    input[type=radio]:checked+label {
+      color: $orange;
       font-weight: bold;
     }
   }

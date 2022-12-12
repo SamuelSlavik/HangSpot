@@ -3,7 +3,7 @@ body {
   font-family: 'Source Sans Pro', sans-serif;
   padding: 0;
   margin: 0;
-  color: $black;
+  color: $dark-gray;
 }
 * {
   box-sizing: border-box;
@@ -25,10 +25,13 @@ ul {
   @include list-reset;
 }
 h2 {
-  font-size: 1.4em;
+  font-size: 2em;
   font-weight: bold;
 }
 
 .content {
   padding: 2% 20% 5% 20%;
+}
+.text--large {
+  font-size: 1.5em;
 }

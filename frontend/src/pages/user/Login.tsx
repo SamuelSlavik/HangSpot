@@ -6,14 +6,13 @@ import Axios from "axios";
 function Login(): JSX.Element {
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
-  const [captcha, setCaptcha] = useState<string>("")
   const { userData, setUserData } = useContext(UserContext);
 
   const submit = async (e:any) => {
     e.preventDefault();
     try {
       const loginRes = await Axios.post(
-        "http://localhost:8000/api/token/",
+        "http://localhost:8000/api/users/token/",
         {email, password}
       );
       setUserData({
