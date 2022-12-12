@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useMemo, useState} from "react"
 import axios from "axios";
-import {useParams, Link} from "react-router-dom"
+import {useParams, Link, useNavigate} from "react-router-dom"
 
 import UserContext from "../../context/userContext";
 
@@ -8,11 +8,15 @@ import {CoordinatesInterface, Spot, Type} from "../../types/interfaces"
 import {GoogleMap, Marker, useLoadScript} from "@react-google-maps/api";
 import Login from "../user/Login";
 
+// FUnction begining
+
 function CreatePlace():JSX.Element {
   const [name, setName] = useState<string>()
   const [coordinates, setCoordinates] = useState<CoordinatesInterface>({lat: 0, lng: 0})
   const [spot_type, setSpot_Type] = useState<string>()
   const [description, setDescription] = useState()
+
+  const navigate = useNavigate();
 
   const [allTypes, setAllTypes] = useState<Type[]>([])
 
@@ -45,28 +49,36 @@ function CreatePlace():JSX.Element {
 
   const submit = async (e: any) => {
     e.preventDefault()
+    const headers = {
+      "Authorization": "Bearer " + userData.token,
+      "Content-Type": "application/json",
+    };
     try {
       const createRes = await axios.post(
         "http://localhost:8000/api/spots/create/",
-        {name, spot_type, owner, latitude, longitude}
+        {name, spot_type, owner, latitude, longitude},
+        {headers: headers}
       )
     } catch (e) {
       console.log(e)
     }
+    navigate("/")
   }
 
   return (
     <>
       {
         !userData.token ?
-          <Login /> :
+          <div className={"content"}>
+            <Login />
+          </div> :
           <div className={"spot"}>
             <div className={"spot__map"}>
               {
                 (!isLoaded) ? <div>Loading...</div> :
                   <GoogleMap
                     zoom={13}
-                    center={{lat: 49, lng: 52}}
+                    center={coordinates.lat && coordinates.lng ? undefined : {lat: 49.19578860752985, lng: 16.606112965870675}}
                     mapContainerClassName="spot__map-inner"
                     onClick={(e) => (
                       e.latLng ?
@@ -90,14 +102,6 @@ function CreatePlace():JSX.Element {
                   onChange={(e) => {setName(e.target.value)}}
                 />
                 <input
-                  type={"text"}
-                  className={"input"}
-                  id={"createName"}
-                  placeholder={"Name"}
-                  value={spot_type}
-                  onChange={(e) => {setSpot_Type(e.target.value)}}
-                />
-                <input
                   type={"submit"}
                   className={"input"}
                   id={"createName"}
@@ -105,13 +109,17 @@ function CreatePlace():JSX.Element {
                   value={"create"}
                   onClick={submit}
                 />
-                <select>
-
-
+                <select onChange={(e) => {setSpot_Type(e.target.value)}}>
+                  {
+                    allTypes.map(({type_name, display_name}) => (
+                      <option value={type_name}>
+                        {display_name}
+                      </option>
+                    ))
+                  }
                 </select>
 
               </form>
-              const
             </div>
             <>{console.log(userData.id)}</>
           </div>
