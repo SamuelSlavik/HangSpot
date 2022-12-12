@@ -5,6 +5,9 @@ import {useParams, Link} from "react-router-dom"
 import {Spot} from "../../types/interfaces"
 import {GoogleMap, Marker, useLoadScript} from "@react-google-maps/api";
 
+import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
+import {SvgIcon} from "@mui/material";
+
 function PlaceDetail():JSX.Element {
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: "AIzaSyA71RHhLabJaCTd4oYQwZGAcF2Luxcnf5s",
@@ -27,6 +30,14 @@ function PlaceDetail():JSX.Element {
     fetchData().catch(console.error)
   }, [])
 
+  const like = async () => {
+    try {
+      const likeRes = await axios.post("")
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   return (
     <div className={"spot"}>
       <div className={"spot__map"}>
@@ -48,7 +59,10 @@ function PlaceDetail():JSX.Element {
               Loading data...
             </div> :
             <>
-              <h2>{spot?.name}</h2>
+              <div className={"spot__header-wrapper"}>
+                <h2>{spot?.name}</h2>
+                <a onClick={like}><SvgIcon component={ThumbUpOutlinedIcon} fontSize={"large"}/></a>
+              </div>
               <p className={"coordinate"}>Latitude: {spot?.latitude}</p>
               <p className={"coordinate"}>Longitude: {spot?.longitude}</p>
               <br/>
@@ -78,6 +92,66 @@ function PlaceDetail():JSX.Element {
                   <>
                     <p style={{marginBottom: 0}}>Parking options:</p>
                     <p style={{marginTop: 0}} className={"text--large"}>{spot?.park_description}</p>
+                  </>
+              }
+              {
+                !spot?.type_specific_data?.seating_provided ?
+                  <></> :
+                  <>
+                    <p className={"text--large"}>Seating nearby provided</p>
+                  </>
+              }
+              {
+                !spot?.type_specific_data?.guarded ?
+                  <></> :
+                  <>
+                    <p className={"text--large"}>Guarded</p>
+                  </>
+              }
+              {
+                !spot?.type_specific_data?.guard_free_time ?
+                  <></> :
+                  <>
+                    <p className={"text--large"}>Guarded</p>
+                  </>
+              }
+              {
+                !spot?.type_specific_data?.guarded ?
+                  <></> :
+                  <>
+                    <p className={"text--large"}>{spot.type_specific_data.guard_free_time}</p>
+                  </>
+              }
+              {
+                !spot?.type_specific_data?.open_time ?
+                  <></> :
+                  <>
+                    <p style={{marginBottom: 0}}>Opened from:</p>
+                    <p style={{marginTop: 0}} className={"text--large"}>{spot.type_specific_data.open_time}</p>
+                  </>
+              }
+              {
+                !spot?.type_specific_data?.close_time ?
+                  <></> :
+                  <>
+                    <p style={{marginBottom: 0}}>Closed from:</p>
+                    <p style={{marginTop: 0}} className={"text--large"}>{spot.type_specific_data.close_time}</p>
+                  </>
+              }
+              {
+                !spot?.type_specific_data?.expected_duration ?
+                  <></> :
+                  <>
+                    <p style={{marginBottom: 0}}>Expected duration:</p>
+                    <p style={{marginTop: 0}} className={"text--large"}>{spot.type_specific_data.expected_duration}</p>
+                  </>
+              }
+              {
+                !spot?.type_specific_data?.close_time ?
+                  <></> :
+                  <>
+                    <p style={{marginBottom: 0}}>Path description:</p>
+                    <p style={{marginTop: 0}} className={"text--large"}>{spot.type_specific_data.path_description}</p>
                   </>
               }
             </>

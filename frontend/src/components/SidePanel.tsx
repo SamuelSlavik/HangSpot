@@ -33,7 +33,6 @@ function SidePanel(): JSX.Element {
     <div className={"sidepanel"} id={"sidePanel"}>
       <div className={"sidepanel__content"}>
         <div>
-          <h2>Filter by category:</h2>
           <div key={"all"}>
             <input
               name={"category"}

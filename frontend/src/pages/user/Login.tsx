@@ -21,14 +21,12 @@ function Login(): JSX.Element {
       if (loginRes.data) {
         navigate("/profile")
       }
-      setTimeout(() => {
-        setUserData({
-          token: loginRes.data.access,
-          id: loginRes.data.user_id,
-        });
-        localStorage.setItem("token", loginRes.data.access);
-        localStorage.setItem("id", loginRes.data.user_id);
-      }, 5000)
+      setUserData({
+        token: loginRes.data.access,
+        id: loginRes.data.user_id,
+      });
+      localStorage.setItem("token", loginRes.data.access);
+      localStorage.setItem("id", loginRes.data.user_id);
     } catch (e) {
       console.log(e);
     }
@@ -44,7 +42,7 @@ function Login(): JSX.Element {
   }
 
   return (
-    <div>
+    <div className={"content "}>
       <form
         className={"login"}
         autoComplete="new-password"

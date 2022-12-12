@@ -14,8 +14,18 @@
     height: 100%;
   }
 
+  &__header-wrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: 5%;
+
+    * {
+      margin-top: 0;
+    }
+  }
+
   &__content {
-    padding: 5% 5% 10% 5%;
+    padding: 10% 5% 10% 5%;
     width: 50%;
 
     .coordinate {
