@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.core.exceptions import FieldError
 
-from .models import SpotCommon, SkateSpot, BMXSpot, WalkSpot, PicnicSpot, SunsetSpot, SpotType
+from .models import SpotCommon, SkateSpot, BMXSpot, WalkSpot, PicnicSpot, SunsetSpot, SpotType, SpotImage
 from userauth.serializers import UserSerializer
 
 
@@ -38,8 +38,8 @@ class SkateSpotDisplaySerializer(SpotSerializerAbstract):
     owner = UserSerializer()
 
     def __init__(self, *args, **kwargs):
-        self.Meta.model = SkateSpot
         super().__init__(*args, **kwargs)
+        self.Meta.model = SkateSpot
 
 
 class BMXSpotDisplaySerializer(SpotSerializerAbstract):
@@ -212,6 +212,19 @@ class SpotSerializer(serializers.ModelSerializer):
         except SunsetSpot.DoesNotExist:
             pass
         return None
+
+
+class SpotCommonSerializer(serializers.ModelSerializer):
+    id = serializers.ReadOnlyField()
+    owner = serializers.PrimaryKeyRelatedField(read_only=True)
+    spot_type = serializers.PrimaryKeyRelatedField(read_only=True)
+    likes = serializers.PrimaryKeyRelatedField(read_only=True)
+    reports = serializers.PrimaryKeyRelatedField(read_only=True)
+    seen_by = serializers.PrimaryKeyRelatedField(read_only=True)
+
+    class Meta:
+        model = SpotCommon
+        fields = '__all__'
 
 
 class SkateSpotSpecificsSerializer(serializers.ModelSerializer):
