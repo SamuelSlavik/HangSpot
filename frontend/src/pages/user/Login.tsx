@@ -3,7 +3,10 @@ import {useEffect, useState, useContext} from "react";
 import UserContext from "../../context/userContext";
 import Axios from "axios";
 
+import {useNavigate} from "react-router-dom"
+
 function Login(): JSX.Element {
+  const navigate = useNavigate()
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
   const { userData, setUserData } = useContext(UserContext);
@@ -15,12 +18,17 @@ function Login(): JSX.Element {
         "http://localhost:8000/api/users/token/",
         {email, password}
       );
-      setUserData({
-        token: loginRes.data.access,
-        id: loginRes.data.user_id,
-      });
-      localStorage.setItem("token", loginRes.data.access);
-      localStorage.setItem("id", loginRes.data.user_id);
+      if (loginRes.data) {
+        navigate("/profile")
+      }
+      setTimeout(() => {
+        setUserData({
+          token: loginRes.data.access,
+          id: loginRes.data.user_id,
+        });
+        localStorage.setItem("token", loginRes.data.access);
+        localStorage.setItem("id", loginRes.data.user_id);
+      }, 5000)
     } catch (e) {
       console.log(e);
     }
@@ -29,9 +37,10 @@ function Login(): JSX.Element {
   const logOut = () => {
     setUserData({
       token: undefined,
-      user: null,
+      id: null,
     });
-    localStorage.setItem("auth-token", "");
+    localStorage.setItem("token", "");
+    localStorage.setItem("id", "");
   }
 
   return (

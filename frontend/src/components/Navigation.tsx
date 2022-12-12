@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import {NavLink} from "react-router-dom";
 
 // ICONS //
@@ -6,8 +6,11 @@ import PushPinOutlinedIcon from '@mui/icons-material/PushPinOutlined';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import {SvgIcon} from "@mui/material";
+import UserContext from "../context/userContext";
 
 function Navigation():JSX.Element {
+  const { userData, setUserData } = useContext(UserContext)
+
   return (
     <div className={"navigation"}>
       <div className={"navigation__logo"}>
@@ -17,8 +20,8 @@ function Navigation():JSX.Element {
         <NavLink to={"/about"} >Search</NavLink>
       </div>
       <div className={"navigation__links"}>
-        <NavLink to={"/create"} ><SvgIcon component={AddOutlinedIcon} fontSize={"large"}/></NavLink>
-        <NavLink to={"/profile"} ><SvgIcon component={PersonOutlineOutlinedIcon} fontSize={"large"}/></NavLink>
+        {userData.token ? <NavLink to={"/create"} ><SvgIcon component={AddOutlinedIcon} fontSize={"large"}/></NavLink> : <></>}
+        <NavLink to={userData.token ? "/profile" : "/login"} ><SvgIcon component={PersonOutlineOutlinedIcon} fontSize={"large"}/></NavLink>
       </div>
     </div>
   )

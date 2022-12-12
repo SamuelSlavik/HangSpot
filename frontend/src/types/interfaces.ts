@@ -10,6 +10,10 @@ export interface Spot {
   user?: User,
   description: string,
   spot_type: string
+  park_near: boolean
+  park_description?: string,
+  reports?: number,
+
 }
 
 export interface Type {

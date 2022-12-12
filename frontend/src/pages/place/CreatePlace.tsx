@@ -67,63 +67,57 @@ function CreatePlace():JSX.Element {
 
   return (
     <>
-      {
-        !userData.token ?
-          <div className={"content"}>
-            <Login />
-          </div> :
-          <div className={"spot"}>
-            <div className={"spot__map"}>
+      <div className={"spot"}>
+        <div className={"spot__map"}>
+          {
+            (!isLoaded) ? <div>Loading...</div> :
+              <GoogleMap
+                zoom={13}
+                center={coordinates.lat && coordinates.lng ? undefined : {lat: 49.19578860752985, lng: 16.606112965870675}}
+                mapContainerClassName="spot__map-inner"
+                onClick={(e) => (
+                  e.latLng ?
+                    setCoordinates({lat: e.latLng?.lat(), lng: e.latLng?.lng()}) :
+                    null
+                )}
+              >
+                {coordinates.lat && coordinates.lng ? <Marker position={newMarker}/> : <></>}
+              </GoogleMap>
+          }
+        </div>
+        <div className={"spot__content"}>
+          <h2>Zadajte veci</h2>
+          <form>
+            <input
+              type={"text"}
+              className={"input"}
+              id={"createName"}
+              placeholder={"Name"}
+              value={name}
+              onChange={(e) => {setName(e.target.value)}}
+            />
+            <input
+              type={"submit"}
+              className={"input"}
+              id={"createName"}
+              placeholder={"Name"}
+              value={"create"}
+              onClick={submit}
+            />
+            <select onChange={(e) => {setSpot_Type(e.target.value)}}>
               {
-                (!isLoaded) ? <div>Loading...</div> :
-                  <GoogleMap
-                    zoom={13}
-                    center={coordinates.lat && coordinates.lng ? undefined : {lat: 49.19578860752985, lng: 16.606112965870675}}
-                    mapContainerClassName="spot__map-inner"
-                    onClick={(e) => (
-                      e.latLng ?
-                        setCoordinates({lat: e.latLng?.lat(), lng: e.latLng?.lng()}) :
-                        null
-                    )}
-                  >
-                    {coordinates.lat && coordinates.lng ? <Marker position={newMarker}/> : <></>}
-                  </GoogleMap>
+                allTypes.map(({type_name, display_name}) => (
+                  <option value={type_name}>
+                    {display_name}
+                  </option>
+                ))
               }
-            </div>
-            <div className={"spot__content"}>
-              <h2>Zadajte veci</h2>
-              <form>
-                <input
-                  type={"text"}
-                  className={"input"}
-                  id={"createName"}
-                  placeholder={"Name"}
-                  value={name}
-                  onChange={(e) => {setName(e.target.value)}}
-                />
-                <input
-                  type={"submit"}
-                  className={"input"}
-                  id={"createName"}
-                  placeholder={"Name"}
-                  value={"create"}
-                  onClick={submit}
-                />
-                <select onChange={(e) => {setSpot_Type(e.target.value)}}>
-                  {
-                    allTypes.map(({type_name, display_name}) => (
-                      <option value={type_name}>
-                        {display_name}
-                      </option>
-                    ))
-                  }
-                </select>
+            </select>
 
-              </form>
-            </div>
-            <>{console.log(userData.id)}</>
-          </div>
-      }
+          </form>
+        </div>
+        <>{console.log(userData.id)}</>
+      </div>
 
     </>
   )
