@@ -6,33 +6,123 @@ from userauth.serializers import UserSerializer
 
 
 class SkateSpotSerializer(serializers.ModelSerializer):
+    id = serializers.ReadOnlyField()
+    owner = UserSerializer()
+    likes = serializers.SerializerMethodField()
+    reports = serializers.SerializerMethodField()
+    seen_by = serializers.SerializerMethodField()
+
     class Meta:
         model = SkateSpot
         fields = '__all__'
 
+    @staticmethod
+    def get_likes(obj):
+        return obj.likes.count()
+
+    @staticmethod
+    def get_reports(obj):
+        return obj.reports.count()
+
+    @staticmethod
+    def get_seen_by(obj):
+        return obj.reports.count()
+
 
 class BMXSpotSerializer(serializers.ModelSerializer):
+    id = serializers.ReadOnlyField()
+    owner = UserSerializer()
+    likes = serializers.SerializerMethodField()
+    reports = serializers.SerializerMethodField()
+    seen_by = serializers.SerializerMethodField()
+
     class Meta:
         model = BMXSpot
         fields = '__all__'
 
+    @staticmethod
+    def get_likes(obj):
+        return obj.likes.count()
+
+    @staticmethod
+    def get_reports(obj):
+        return obj.reports.count()
+
+    @staticmethod
+    def get_seen_by(obj):
+        return obj.reports.count()
+
 
 class WalkSpotSerializer(serializers.ModelSerializer):
+    id = serializers.ReadOnlyField()
+    owner = UserSerializer()
+    likes = serializers.SerializerMethodField()
+    reports = serializers.SerializerMethodField()
+    seen_by = serializers.SerializerMethodField()
+
     class Meta:
         model = WalkSpot
         fields = '__all__'
 
+    @staticmethod
+    def get_likes(obj):
+        return obj.likes.count()
+
+    @staticmethod
+    def get_reports(obj):
+        return obj.reports.count()
+
+    @staticmethod
+    def get_seen_by(obj):
+        return obj.reports.count()
+
 
 class PicnicSpotSerializer(serializers.ModelSerializer):
+    id = serializers.ReadOnlyField()
+    owner = UserSerializer()
+    likes = serializers.SerializerMethodField()
+    reports = serializers.SerializerMethodField()
+    seen_by = serializers.SerializerMethodField()
+
     class Meta:
         model = PicnicSpot
         fields = '__all__'
 
+    @staticmethod
+    def get_likes(obj):
+        return obj.likes.count()
+
+    @staticmethod
+    def get_reports(obj):
+        return obj.reports.count()
+
+    @staticmethod
+    def get_seen_by(obj):
+        return obj.reports.count()
+
 
 class SunsetSpotSerializer(serializers.ModelSerializer):
+    id = serializers.ReadOnlyField()
+    owner = UserSerializer()
+    likes = serializers.SerializerMethodField()
+    reports = serializers.SerializerMethodField()
+    seen_by = serializers.SerializerMethodField()
+
     class Meta:
         model = SunsetSpot
         fields = '__all__'
+
+    @staticmethod
+    def get_likes(obj):
+        return obj.likes.count()
+
+    @staticmethod
+    def get_reports(obj):
+        return obj.reports.count()
+
+    @staticmethod
+    def get_seen_by(obj):
+        return obj.reports.count()
 
 
 class SpotTypeSerializer(serializers.ModelSerializer):

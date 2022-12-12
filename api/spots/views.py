@@ -44,7 +44,9 @@ def spot_create_view(request, *args, **kwargs):
                 return JsonResponse({'Error': f'Unknown spot type {type_name}'}, status=400)
             serializer = serializer_class(data=data)
             if serializer.is_valid():
-                serializer.save()
+                spot = serializer.save(commit=False)
+                spot.owner = request.user
+                spot.save()
                 return JsonResponse(serializer.data, status=201)
             return JsonResponse(serializer.errors, status=400)
         except SpotType.DoesNotExist:
