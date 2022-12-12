@@ -93,6 +93,11 @@ class SpotFilterTypeListView(generics.ListAPIView):
         return SpotCommon.objects.filter(spot_type__type_name=spot_type)
 
 
+class SpotDestroyView(generics.DestroyAPIView):
+    queryset = SpotCommon.objects.all()
+    serializer_class = SpotSerializer
+
+
 class SpotTypeListView(generics.ListAPIView):
     serializer_class = SpotTypeSerializer
 
