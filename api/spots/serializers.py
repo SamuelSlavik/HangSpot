@@ -5,16 +5,21 @@ from .models import SpotCommon, SkateSpot, BMXSpot, WalkSpot, PicnicSpot, Sunset
 from userauth.serializers import UserSerializer
 
 
-class SkateSpotSerializer(serializers.ModelSerializer):
+class SpotSerializerAbstract(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
-    owner = UserSerializer()
     likes = serializers.SerializerMethodField()
     reports = serializers.SerializerMethodField()
     seen_by = serializers.SerializerMethodField()
 
     class Meta:
-        model = SkateSpot
+        model = None
         fields = '__all__'
+        extra_kwargs = {
+            'owner': {
+                'read_only': True,
+                'required': False,
+            },
+        }
 
     @staticmethod
     def get_likes(obj):
@@ -29,109 +34,97 @@ class SkateSpotSerializer(serializers.ModelSerializer):
         return obj.reports.count()
 
 
-class BMXSpotSerializer(serializers.ModelSerializer):
-    id = serializers.ReadOnlyField()
+class SkateSpotDisplaySerializer(SpotSerializerAbstract):
     owner = UserSerializer()
-    likes = serializers.SerializerMethodField()
-    reports = serializers.SerializerMethodField()
-    seen_by = serializers.SerializerMethodField()
 
-    class Meta:
-        model = BMXSpot
-        fields = '__all__'
-
-    @staticmethod
-    def get_likes(obj):
-        return obj.likes.count()
-
-    @staticmethod
-    def get_reports(obj):
-        return obj.reports.count()
-
-    @staticmethod
-    def get_seen_by(obj):
-        return obj.reports.count()
+    def __init__(self, *args, **kwargs):
+        self.Meta.model = SkateSpot
+        super().__init__(*args, **kwargs)
 
 
-class WalkSpotSerializer(serializers.ModelSerializer):
-    id = serializers.ReadOnlyField()
+class BMXSpotDisplaySerializer(SpotSerializerAbstract):
     owner = UserSerializer()
-    likes = serializers.SerializerMethodField()
-    reports = serializers.SerializerMethodField()
-    seen_by = serializers.SerializerMethodField()
 
-    class Meta:
-        model = WalkSpot
-        fields = '__all__'
-
-    @staticmethod
-    def get_likes(obj):
-        return obj.likes.count()
-
-    @staticmethod
-    def get_reports(obj):
-        return obj.reports.count()
-
-    @staticmethod
-    def get_seen_by(obj):
-        return obj.reports.count()
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.Meta.model = BMXSpot
 
 
-class PicnicSpotSerializer(serializers.ModelSerializer):
-    id = serializers.ReadOnlyField()
+class WalkSpotDisplaySerializer(SpotSerializerAbstract):
     owner = UserSerializer()
-    likes = serializers.SerializerMethodField()
-    reports = serializers.SerializerMethodField()
-    seen_by = serializers.SerializerMethodField()
 
-    class Meta:
-        model = PicnicSpot
-        fields = '__all__'
-
-    @staticmethod
-    def get_likes(obj):
-        return obj.likes.count()
-
-    @staticmethod
-    def get_reports(obj):
-        return obj.reports.count()
-
-    @staticmethod
-    def get_seen_by(obj):
-        return obj.reports.count()
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.Meta.model = WalkSpot
 
 
-class SunsetSpotSerializer(serializers.ModelSerializer):
-    id = serializers.ReadOnlyField()
+class PicnicSpotDisplaySerializer(SpotSerializerAbstract):
     owner = UserSerializer()
-    likes = serializers.SerializerMethodField()
-    reports = serializers.SerializerMethodField()
-    seen_by = serializers.SerializerMethodField()
 
-    class Meta:
-        model = SunsetSpot
-        fields = '__all__'
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.Meta.model = PicnicSpot
 
-    @staticmethod
-    def get_likes(obj):
-        return obj.likes.count()
 
-    @staticmethod
-    def get_reports(obj):
-        return obj.reports.count()
+class SunsetSpotDisplaySerializer(SpotSerializerAbstract):
+    owner = UserSerializer()
 
-    @staticmethod
-    def get_seen_by(obj):
-        return obj.reports.count()
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.Meta.model = SunsetSpot
+
+
+class SkateSpotManageSerializer(SpotSerializerAbstract):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.Meta.model = SkateSpot
+        self.owner = serializers.PrimaryKeyRelatedField(read_only=True)
+
+
+class BMXSpotManageSerializer(SpotSerializerAbstract):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.Meta.model = BMXSpot
+        self.owner = serializers.PrimaryKeyRelatedField(read_only=True)
+
+
+class WalkSpotManageSerializer(SpotSerializerAbstract):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.Meta.model = WalkSpot
+        self.owner = serializers.PrimaryKeyRelatedField(read_only=True)
+
+
+class PicnicSpotManageSerializer(SpotSerializerAbstract):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.Meta.model = PicnicSpot
+        self.owner = serializers.PrimaryKeyRelatedField(read_only=True)
+
+
+class SunsetSpotManageSerializer(SpotSerializerAbstract):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.Meta.model = SunsetSpot
+        self.owner = serializers.PrimaryKeyRelatedField(read_only=True)
 
 
 class SpotTypeSerializer(serializers.ModelSerializer):
     type_serializers = {
-        'skateboard': SkateSpotSerializer,
-        'bmx': BMXSpotSerializer,
-        'walk': WalkSpotSerializer,
-        'picnic': PicnicSpotSerializer,
-        'sunset': SunsetSpotSerializer,
+        'display': {
+            'skateboard': SkateSpotDisplaySerializer,
+            'bmx': BMXSpotDisplaySerializer,
+            'walk': WalkSpotDisplaySerializer,
+            'picnic': PicnicSpotDisplaySerializer,
+            'sunset': SunsetSpotDisplaySerializer,
+        },
+        'manage': {
+            'skateboard': SkateSpotManageSerializer,
+            'bmx': BMXSpotManageSerializer,
+            'walk': WalkSpotManageSerializer,
+            'picnic': PicnicSpotManageSerializer,
+            'sunset': SunsetSpotManageSerializer,
+        },
     }
 
     class Meta:
@@ -141,11 +134,14 @@ class SpotTypeSerializer(serializers.ModelSerializer):
             'display_name',
         )
 
-    def get_spot_serializer_class(self):
-        for key, cls in self.type_serializers.items():
-            if key == self.data.get('type_name'):
-                return cls
-        return None
+    def get_spot_serializer_class(self, option='display'):
+        try:
+            for key, cls in self.type_serializers[option].items():
+                if key == self.data.get('type_name'):
+                    return cls
+            return None
+        except KeyError:
+            return None
 
 
 class SpotSerializer(serializers.ModelSerializer):

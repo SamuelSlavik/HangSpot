@@ -12,11 +12,6 @@ from .models import SpotCommon, SkateSpot, BMXSpot, WalkSpot, PicnicSpot, Sunset
 from .serializers import (
     SpotSerializer,
     SpotTypeSerializer,
-    SkateSpotSerializer,
-    BMXSpotSerializer,
-    WalkSpotSerializer,
-    PicnicSpotSerializer,
-    SunsetSpotSerializer,
 )
 
 
@@ -35,18 +30,16 @@ def spot_create_view(request, *args, **kwargs):
     Creates spot
     """
     if request.method == 'POST':
-        data = JSONParser().parse(request)
+        data = request.POST
         type_name = data.get('spot_type')
         try:
             type_serializer = SpotTypeSerializer(SpotType.objects.get(pk=type_name))
-            serializer_class = type_serializer.get_spot_serializer_class()
+            serializer_class = type_serializer.get_spot_serializer_class('manage')
             if serializer_class is None:
                 return JsonResponse({'Error': f'Unknown spot type {type_name}'}, status=400)
             serializer = serializer_class(data=data)
             if serializer.is_valid():
-                spot = serializer.save(commit=False)
-                spot.owner = request.user
-                spot.save()
+                serializer.save(owner=request.user)
                 return JsonResponse(serializer.data, status=201)
             return JsonResponse(serializer.errors, status=400)
         except SpotType.DoesNotExist:
@@ -59,7 +52,10 @@ class SpotRetrieveUpdateView(generics.RetrieveUpdateAPIView):
         try:
             spot_type = SpotCommon.objects.get(pk=self.kwargs['pk']).spot_type
             spot_type_serializer = SpotTypeSerializer(spot_type)
-            serializer_class = spot_type_serializer.get_spot_serializer_class()
+            if self.request.method == 'GET':
+                serializer_class = spot_type_serializer.get_spot_serializer_class()
+            else:
+                serializer_class = spot_type_serializer.get_spot_serializer_class('manage')
             if serializer_class is None:
                 raise NotFound(detail='Unknown spot type')
             return serializer_class
