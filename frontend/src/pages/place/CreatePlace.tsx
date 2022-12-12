@@ -86,7 +86,10 @@ function CreatePlace():JSX.Element {
           }
         </div>
         <div className={"spot__content"}>
-          <h2>Zadajte veci</h2>
+          <p>Latitude: {coordinates.lat ? coordinates.lat : ""}</p>
+          <p>Longitude: {coordinates.lng ? coordinates.lng : ""}</p>
+          <br/>
+          <br/>
           <form>
             <input
               type={"text"}

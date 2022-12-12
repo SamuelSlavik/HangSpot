@@ -1,0 +1,26 @@
+.profile {
+  width: 100%;
+  padding: 10% 10% 10% 10%;
+  display: flex;
+  justify-content: space-between;
+
+  &__left {
+    width: 40%;
+  }
+  &__spots {
+    width: 55%;
+  }
+  &__info {
+    width: 100%;
+    text-align: center;
+    padding: 0 5% 5% 5%;
+
+    img {
+      width: 50%;
+      height: auto;
+    }
+  }
+  &__achievements {
+    width: 100%;
+  }
+}

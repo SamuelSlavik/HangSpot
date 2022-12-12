@@ -13,6 +13,15 @@ export interface Spot {
   park_near: boolean
   park_description?: string,
   reports?: number,
+  type_specific_data?: {
+    seating_provided?: boolean
+    guarded?: boolean
+    guard_free_time?: string
+    open_time?: string
+    close_time?: string
+    expected_duration?: number
+    path_description?: string
+  }
 
 }
 
@@ -23,8 +32,9 @@ export interface Type {
 
 export interface User {
   id: number,
-  lastLogin: string,
   username: string,
+  email: string,
+  image?: string,
 }
 
 export interface CoordinatesInterface {
