@@ -6,6 +6,7 @@ from .views import (
     UserDestroyView,
     TokenObtainPairUserView,
     TokenRefreshUserView,
+    TokenCheckUserView,
 )
 
 # /api/[these urls]
@@ -14,6 +15,7 @@ urlpatterns = [
     # LOGIN
     path('token/', TokenObtainPairUserView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshUserView.as_view(), name='token_refresh'),
+    path('token/check/', TokenCheckUserView.as_view(), name='token_check'),
     # CRUD USER
     path('create/', UserCreateView.as_view(), name='users_create'),
     path('get/<str:pk>/', UserRetrieveUpdateView.as_view(), name='users_retrieve_update'),
