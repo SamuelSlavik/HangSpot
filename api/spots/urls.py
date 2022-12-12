@@ -7,7 +7,9 @@ from .views import (
     spot_create_view,
     SpotRetrieveUpdateView,
     SpotDestroyView,
-    LikeSpotView
+    LikeSpotView,
+    ReportSpotView,
+    DisplaySpotView
 )
 
 urlpatterns = [
@@ -19,4 +21,6 @@ urlpatterns = [
     path('user/<str:user_id>/', SpotFilterUserListView.as_view(), name='spots_list_filtered_user'),
     path('types/', SpotTypeListView.as_view(), name='spots_list_types'),
     path('likes/<str:pk>/', LikeSpotView.as_view(), name='spots_like_give_get'),
+    path('reports/<str:pk>/', ReportSpotView.as_view(), name='spots_report_give_get'),
+    path('displays/<str:pk>/', DisplaySpotView.as_view(), name='spots_display_give_get'),
 ]

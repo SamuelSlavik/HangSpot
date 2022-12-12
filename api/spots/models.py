@@ -27,7 +27,7 @@ class SpotCommon(models.Model):
     likes = models.ManyToManyField(to=User, related_name='likes', blank=True)
     reports = models.ManyToManyField(to=User, related_name='reports', blank=True)
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE)
-    seen_by = models.ManyToManyField(to=User, related_name='seen_spots', blank=True)
+    displays = models.ManyToManyField(to=User, related_name='displays', blank=True)
     spot_type = models.ForeignKey(to=SpotType, on_delete=models.CASCADE, to_field='type_name')
 
     def __str__(self):
