@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework import generics
+from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import AccessToken
@@ -33,6 +34,7 @@ class UserCreateView(generics.CreateAPIView):
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
 
 class UserRetrieveUpdateView(generics.RetrieveUpdateAPIView):
@@ -44,6 +46,7 @@ class UserRetrieveUpdateView(generics.RetrieveUpdateAPIView):
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class UserDestroyView(generics.DestroyAPIView):
@@ -52,6 +55,7 @@ class UserDestroyView(generics.DestroyAPIView):
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
 
 class TokenObtainPairUserView(TokenObtainPairView):
@@ -60,3 +64,9 @@ class TokenObtainPairUserView(TokenObtainPairView):
 
 class TokenRefreshUserView(TokenRefreshView):
     serializer_class = TokenRefreshSerializer
+
+
+class TokenCheckUserView(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticated]
