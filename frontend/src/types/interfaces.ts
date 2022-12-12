@@ -22,3 +22,8 @@ export interface User {
   lastLogin: string,
   username: string,
 }
+
+export interface CoordinatesInterface {
+  lat: number,
+  lng: number
+}

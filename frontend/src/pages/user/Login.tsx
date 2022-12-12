@@ -17,8 +17,10 @@ function Login(): JSX.Element {
       );
       setUserData({
         token: loginRes.data.access,
+        id: loginRes.data.user_id,
       });
-      localStorage.setItem("auth-token", loginRes.data.token);
+      localStorage.setItem("token", loginRes.data.access);
+      localStorage.setItem("id", loginRes.data.user_id);
     } catch (e) {
       console.log(e);
     }

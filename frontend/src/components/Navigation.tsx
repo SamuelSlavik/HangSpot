@@ -17,7 +17,7 @@ function Navigation():JSX.Element {
         <NavLink to={"/about"} >Search</NavLink>
       </div>
       <div className={"navigation__links"}>
-        <NavLink to={"/createPost"} ><SvgIcon component={AddOutlinedIcon} fontSize={"large"}/></NavLink>
+        <NavLink to={"/create"} ><SvgIcon component={AddOutlinedIcon} fontSize={"large"}/></NavLink>
         <NavLink to={"/profile"} ><SvgIcon component={PersonOutlineOutlinedIcon} fontSize={"large"}/></NavLink>
       </div>
     </div>

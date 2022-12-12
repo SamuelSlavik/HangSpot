@@ -11,12 +11,13 @@ import Login from "./pages/user/Login";
 import Profile from "./pages/user/Profile";
 import GamesMenu from "./pages/games/GamesMenu";
 import PlaceDetail from "./pages/place/PlaceDetail";
+import CreatePlace from "./pages/place/CreatePlace";
 
 function App() {
   // User context
   const [userData, setUserData] = useState({
     token: undefined,
-    name: undefined,
+    id: undefined,
   });
 
   const [searchType, setSearchType] = useState<string>("all")
@@ -46,6 +47,10 @@ function App() {
             <Route
               path={"/detail/:id"}
               element={<PlaceDetail/>}
+            />
+            <Route
+              path={"/create/"}
+              element={<CreatePlace/>}
             />
           </Routes>
         </SearchContext.Provider>
