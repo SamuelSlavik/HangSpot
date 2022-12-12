@@ -16,7 +16,7 @@ import {Type} from "../types/interfaces";
 function SidePanel(): JSX.Element {
   const {searchType, setSearchType} = useContext(SearchContext)
 
-  const [allTypes, setAllTypes] = useState<Type[]>([])//const [searchType, setSearchType] = useState<string>("")
+  const [allTypes, setAllTypes] = useState<Type[]>([])
 
   useEffect(() => {
     const fetchTypes = async () => {
@@ -29,10 +29,6 @@ function SidePanel(): JSX.Element {
     }
     fetchTypes().catch(console.error)
   }, [])
-
-  const tagCheckboxHandler = (event: InputEvent) => {
-
-  }
 
   return (
     <div className={"sidepanel"} id={"sidePanel"}>
