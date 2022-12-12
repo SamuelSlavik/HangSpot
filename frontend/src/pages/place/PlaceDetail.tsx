@@ -42,29 +42,44 @@ function PlaceDetail():JSX.Element {
         }
       </div>
       <div className={"spot__content"}>
-        <h2>{spot?.name}</h2>
-        <p className={"coordinate"}>Latitude: {spot?.latitude}</p>
-        <p className={"coordinate"}>Longitude: {spot?.longitude}</p>
-        <br/>
-        <p style={{marginBottom: 0}}>Category:</p>
-        <p style={{marginTop: 0}} className={"text--large"}><b>{spot?.spot_type}</b></p>
-        <div className={"spot__display-flex"}>
-          <div>
-            <p style={{marginBottom: 0}}>Created by:</p>
-            <Link to={"/user/" + spot?.owner.id} style={{marginTop: 0}} className={"text--large"}><b>{spot?.owner.username}</b></Link>
-          </div>
-          <div>
-            <p style={{marginBottom: 0}}>People liked:</p>
-            <p style={{marginTop: 0}} className={"text--large"}><b>{spot?.likes}</b></p>
-          </div>
-        </div>
-        <br/>
         {
-          !spot?.description ?
-            <></> :
+          !spot ?
+            <div>
+              Loading data...
+            </div> :
             <>
-              <p>Description:</p>
-              <p style={{marginBottom: 0}} className={"text--large"}>{spot?.description}</p>
+              <h2>{spot?.name}</h2>
+              <p className={"coordinate"}>Latitude: {spot?.latitude}</p>
+              <p className={"coordinate"}>Longitude: {spot?.longitude}</p>
+              <br/>
+              <p style={{marginBottom: 0}}>Category:</p>
+              <p style={{marginTop: 0}} className={"text--large"}><b>{spot?.spot_type}</b></p>
+              <div className={"spot__display-flex"}>
+                <div>
+                  <p style={{marginBottom: 0}}>Created by:</p>
+                  <Link to={"/user/" + spot?.owner.id} style={{marginTop: 0}} className={"text--large"}><b>{spot?.owner.username}</b></Link>
+                </div>
+                <div>
+                  <p style={{marginBottom: 0}}>People liked:</p>
+                  <p style={{marginTop: 0}} className={"text--large"}><b>{spot?.likes}</b></p>
+                </div>
+              </div>
+              {
+                !spot?.description ?
+                  <></> :
+                  <>
+                    <p style={{marginBottom: 0}}>Description:</p>
+                    <p style={{marginTop: 0}} className={"text--large"}>{spot?.description}</p>
+                  </>
+              }
+              {
+                !spot?.park_near ?
+                  <></> :
+                  <>
+                    <p style={{marginBottom: 0}}>Parking options:</p>
+                    <p style={{marginTop: 0}} className={"text--large"}>{spot?.park_description}</p>
+                  </>
+              }
             </>
         }
       </div>

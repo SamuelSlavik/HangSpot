@@ -28,25 +28,24 @@ function App() {
     const checkLoggedIn = async () => {
       let token = localStorage.getItem("token");
       if (token === null) {
-        localStorage.setItem("token", "");
-        token = "";
+        localStorage.setItem("token", " ");
+        token = " ";
       }
-      const tokenRes = await axios.post(
-        "http://localhost:8000/users/tokenIsValid",
-        null,
-        { headers: { "Authorization": token } }
+      const tokenRes = await axios.get(
+        "http://localhost:8000/api/users/token/check/",
+        { headers: { "Authorization": "Bearer " + token } }
       );
-      if (tokenRes.data) {
-        const userRes = await axios.get("http://localhost:8000/api/users/token/", {
-          headers: { "Authorization": token },
-        });
+      if (tokenRes.data && token != null) {
+        // @ts-ignore
         setUserData({
-          token: userRes.data.access,
-          id: userRes.data.id,
+          // @ts-ignore
+          token: localStorage.getItem("token"),
+          // @ts-ignore
+          id: localStorage.getItem("id"),
         });
       }
     };
-    checkLoggedIn();
+    checkLoggedIn().catch(console.error);
     }, []);
 
 

@@ -50,7 +50,7 @@ function Map() {
               <Link key={id} to={"/a"}>
                 <Marker
                   key={id}
-                  label={name}
+                  title={name}
                   position={{ lat: latitude, lng: longitude }}
                   onClick={() => navigate("/detail/" + id)}
                 />
