@@ -232,7 +232,8 @@ class SkateSpotSpecificsSerializer(serializers.ModelSerializer):
         model = SkateSpot
         fields = (
             'guarded',
-            'guard_free_time',
+            'guard_free_from',
+            'guard_free_till',
             'open_alltime',
             'open_time',
             'close_time',
@@ -245,7 +246,8 @@ class BMXSpotSpecificsSerializer(serializers.ModelSerializer):
         model = BMXSpot
         fields = (
             'guarded',
-            'guard_free_time',
+            'guard_free_from',
+            'guard_free_till',
             'open_alltime',
             'open_time',
             'close_time',
@@ -274,5 +276,5 @@ class SunsetSpotSpecificsSerializer(serializers.ModelSerializer):
     class Meta:
         model = SunsetSpot
         fields = (
-            'seating',
+            'seating_provided',
         )
