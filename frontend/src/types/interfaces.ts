@@ -4,24 +4,48 @@ export interface Spot {
   latitude: number,
   longitude: number,
   owner: User,
-  spotType: string,
+  spot_type: Type
+
   images?: string[],
   user?: User,
-  description: string,
-  spot_type: string
-  park_near: boolean
+  description?: string,
+  park_near?: boolean
   park_description?: string,
   reports?: number,
   type_specific_data?: {
-    seating_provided?: boolean
-    guarded?: boolean
-    guard_free_time?: string
-    open_time?: string
-    close_time?: string
-    expected_duration?: number
-    path_description?: string
+    seating_provided?: boolean // picnic, sunset
+    guarded?: boolean // bmx, skateboard
+    guard_free_from?: string // bmx, skateboard
+    guard_free_till?: string // bmx, skateboard
+    open_time?: string // bmx, skateboard
+    close_time?: string // bmx, skateboard
+    expected_duration?: number // walk
+    path_description?: string // walk
   }
+}
 
+export interface SpotForTheFuckinDetail {
+  id: number,
+  name: string,
+  latitude: number,
+  longitude: number,
+  owner: User,
+  spot_type: Type
+
+  images?: string[],
+  user?: User,
+  description?: string,
+  park_near?: boolean
+  park_description?: string,
+  reports?: number,
+  seating_provided?: boolean // picnic, sunset
+  guarded?: boolean // bmx, skateboard
+  guard_free_from?: string // bmx, skateboard
+  guard_free_till?: string // bmx, skateboard
+  open_time?: string // bmx, skateboard
+  close_time?: string // bmx, skateboard
+  expected_duration?: number // walk
+  path_description?: string // walk
 }
 
 export interface Like {
@@ -31,7 +55,8 @@ export interface Like {
 
 export interface Type {
   type_name: string,
-  display_name: string
+  display_name: string,
+  marker_color: string
 }
 
 export interface User {

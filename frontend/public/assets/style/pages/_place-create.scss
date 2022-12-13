@@ -1,0 +1,38 @@
+.spot {
+  .input {
+    width: 60%;
+    margin-bottom: 5%;
+    padding: 1.5% 1% 1.5% 3%;
+    text-align: left;
+    border-radius: 5px;
+    outline: none;
+    border: solid 2px $light-gray;
+    background-color: $lighter-gray;
+    color: $black;
+    @include transition-fast;
+
+    &:hover, &:active, &:focus {
+      border-color: $orange;
+    }
+  }
+  .submit {
+    width: 60%;
+    margin-bottom: 5%;
+    padding: 2% 1% 2% 1%;
+    text-align: center;
+    border-radius: 5px;
+    outline: none;
+    border: solid 2px $orange;
+    background-color: $orange;
+    color: $white;
+    @include transition-fast;
+
+    &:hover, &:active, &:focus {
+      border-color: $orange;
+      cursor: pointer;
+    }
+  }
+  .input-checkbox {
+    width: max-content;
+  }
+}
