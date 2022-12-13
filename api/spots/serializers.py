@@ -34,8 +34,15 @@ class SpotSerializerAbstract(serializers.ModelSerializer):
         return obj.reports.count()
 
 
+class SpotTypeSerializerBase(serializers.ModelSerializer):
+    class Meta:
+        model = SpotType
+        fields = '__all__'
+
+
 class SkateSpotDisplaySerializer(SpotSerializerAbstract):
     owner = UserSerializer()
+    spot_type = SpotTypeSerializerBase()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -44,6 +51,7 @@ class SkateSpotDisplaySerializer(SpotSerializerAbstract):
 
 class BMXSpotDisplaySerializer(SpotSerializerAbstract):
     owner = UserSerializer()
+    spot_type = SpotTypeSerializerBase()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -52,6 +60,7 @@ class BMXSpotDisplaySerializer(SpotSerializerAbstract):
 
 class WalkSpotDisplaySerializer(SpotSerializerAbstract):
     owner = UserSerializer()
+    spot_type = SpotTypeSerializerBase()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -60,6 +69,7 @@ class WalkSpotDisplaySerializer(SpotSerializerAbstract):
 
 class PicnicSpotDisplaySerializer(SpotSerializerAbstract):
     owner = UserSerializer()
+    spot_type = SpotTypeSerializerBase()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -68,6 +78,7 @@ class PicnicSpotDisplaySerializer(SpotSerializerAbstract):
 
 class SunsetSpotDisplaySerializer(SpotSerializerAbstract):
     owner = UserSerializer()
+    spot_type = SpotTypeSerializerBase()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -132,6 +143,7 @@ class SpotTypeSerializer(serializers.ModelSerializer):
         fields = (
             'type_name',
             'display_name',
+            'marker_color',
         )
 
     def get_spot_serializer_class(self, option='display'):
@@ -278,3 +290,25 @@ class SunsetSpotSpecificsSerializer(serializers.ModelSerializer):
         fields = (
             'seating_provided',
         )
+
+
+class SpotImageManageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SpotImage
+        fields = '__all__'
+
+
+class SpotImageDisplaySerializer(serializers.ModelSerializer):
+    image_url = serializers.SerializerMethodField()
+
+    class Meta:
+        model = SpotImage
+        fields = (
+            'id',
+            'spot',
+            'image_url',
+        )
+
+    @staticmethod
+    def get_image_url(obj):
+        return obj.image.path

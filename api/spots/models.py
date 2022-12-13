@@ -7,6 +7,7 @@ from userauth.models import User
 class SpotType(models.Model):
     type_name = models.CharField(max_length=255, unique=True, primary_key=True)
     display_name = models.CharField(max_length=255)
+    marker_color = models.CharField(max_length=255)
 
     def __str__(self):
         return self.display_name
