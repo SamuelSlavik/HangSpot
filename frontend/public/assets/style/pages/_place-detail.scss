@@ -27,6 +27,9 @@
   &__content {
     padding: 10% 5% 10% 5%;
     width: 50%;
+    overflow: auto;
+    overflow-y: scroll;
+    height: 100vh;
 
     .coordinate {
       color: $light-gray;

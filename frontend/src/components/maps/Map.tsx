@@ -7,17 +7,24 @@ import {Spot} from "../../types/interfaces"
 import axios from "axios";
 
 import SearchContext from "../../context/searchContext";
+import ReloadContext from "../../context/reloadContext";
+import MapContext from "../../context/mapContext";
+
+import PushPinIcon from '@mui/icons-material/PushPin';
+
+import {useLoadScript} from "@react-google-maps/api";
 
 function Map() {
   const navigate = useNavigate();
   const [coordinates, setCoordinates] = useState<any>()
 
   const center = useMemo(() => ({ lat: 49.19578860752985, lng: 16.606112965870675 }), []);
-  const newMarker = useMemo(() => ({ lat: 50, lng: -80 }), []);
 
   const [spots, setSpots] = useState<Spot[]>([])
 
   const {searchType} = useContext(SearchContext)
+
+  const {forceReload} = useContext(ReloadContext)
 
   useEffect(() => {
     console.log(searchType)
@@ -30,7 +37,7 @@ function Map() {
       }
     }
     fetchData().catch(console.error)
-  },[searchType])
+  },[searchType, forceReload])
 
   return (
     <>
@@ -40,21 +47,16 @@ function Map() {
         mapContainerClassName="map-container"
         onClick={(e) => {(setCoordinates([e.latLng?.toJSON()]))}}
       >
-        <Marker label={"Home"} position={center}/>
-        <Marker position={newMarker} />
-
         {
-          !spots.length ?
+          !spots.length?
             <></> :
             spots.map(({id, name, latitude, longitude}) => (
-              <Link key={id} to={"/a"}>
-                <Marker
-                  key={id}
-                  title={name}
-                  position={{ lat: latitude, lng: longitude }}
-                  onClick={() => navigate("/detail/" + id)}
-                />
-              </Link>
+            <Marker
+              key={id}
+              title={name}
+              position={{ lat: latitude, lng: longitude }}
+              onClick={() => navigate("/detail/" + id)}
+            />
               )
             )
         }

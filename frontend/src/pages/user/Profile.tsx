@@ -10,6 +10,8 @@ import Spots from "./Spots";
 
 import profilePhoto from "../../assets/images/profile-photo.jpeg"
 
+
+
 function Profile():JSX.Element {
   const navigate = useNavigate()
   const { userData, setUserData } = useContext(UserContext);
@@ -40,21 +42,31 @@ function Profile():JSX.Element {
     fetchUserData().catch(console.error)
   }, [userData]);
 
+  const logOut = async () => {
+    setUserData({
+      token: undefined,
+      id: null,
+    });
+    localStorage.setItem("token", "");
+    localStorage.setItem("id", "");
+  }
+
   return (
     <div>
       {
         userData.token === undefined ?
-          <div className={"content"}><h1>LOADING</h1></div> :
+          <div className={"content profile-loggedOut"}><h1>You have to log in first</h1></div> :
           <div className={"profile"}>
             <div className={"profile__left"}>
               <div className={"profile__info"}>
                 {
                   userInfo?.image ?
-                    <p>Zevraj ten kokot ma image</p> :
-                    <img alt={"profile image"} src={profilePhoto}/>
+                    <p>Profile Image</p> :
+                    <img alt={"Profile Image"} src={profilePhoto}/>
                 }
                 <h2>{userInfo?.username}</h2>
                 <p>{userInfo?.email}</p>
+                <a onClick={logOut}>Log Out</a>
               </div>
               <Achievements />
             </div>

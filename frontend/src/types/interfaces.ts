@@ -6,7 +6,6 @@ export interface Spot {
   owner: User,
   spotType: string,
   images?: string[],
-  likes?: number,
   user?: User,
   description: string,
   spot_type: string
@@ -25,6 +24,11 @@ export interface Spot {
 
 }
 
+export interface Like {
+  likes: number
+  user_in: boolean
+}
+
 export interface Type {
   type_name: string,
   display_name: string
@@ -40,4 +44,14 @@ export interface User {
 export interface CoordinatesInterface {
   lat: number,
   lng: number
+}
+
+export interface Achievement {
+  current_tier: number
+  total_tiers: number
+  goal: {
+    progress: number
+    quantity: number
+    description: number
+  }
 }

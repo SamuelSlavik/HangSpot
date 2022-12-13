@@ -32,15 +32,6 @@ function Login(): JSX.Element {
     }
   };
 
-  const logOut = () => {
-    setUserData({
-      token: undefined,
-      id: null,
-    });
-    localStorage.setItem("token", "");
-    localStorage.setItem("id", "");
-  }
-
   return (
     <div className={"content "}>
       <form
@@ -74,8 +65,6 @@ function Login(): JSX.Element {
           value={"Log in"}
         />
       </form>
-      {userData.token ? <p>logged in </p> : <>nope</>}
-      <a onClick={logOut}>Log Out</a>
     </div>
   )
 }
