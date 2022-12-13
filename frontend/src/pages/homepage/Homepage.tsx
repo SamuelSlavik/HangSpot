@@ -1,7 +1,5 @@
-import React, {useEffect} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {Link} from "react-router-dom";
-
-import {useLoadScript} from "@react-google-maps/api";
 
 import {toggleSidePanelOn} from "../../functions/toggleSidePanel";
 
@@ -13,11 +11,10 @@ import {SvgIcon} from "@mui/material";
 //components
 import SidePanel from "../../components/SidePanel";
 import Map from "../../components/maps/Map";
+import mapContext from "../../context/mapContext";
 
 function Homepage():JSX.Element {
-  const { isLoaded } = useLoadScript({
-    googleMapsApiKey: "AIzaSyA71RHhLabJaCTd4oYQwZGAcF2Luxcnf5s",
-  });
+  const {isLoaded} = useContext(mapContext)
 
   return (
     <div className={"homepage"}>

@@ -1,12 +1,13 @@
-import React, {useEffect, useState} from "react"
+import React, {useContext, useEffect, useState} from "react"
 import axios from "axios";
 import {useParams, Link} from "react-router-dom"
 
-import {Spot} from "../../types/interfaces"
+import {Like, Spot} from "../../types/interfaces"
 import {GoogleMap, Marker, useLoadScript} from "@react-google-maps/api";
 
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import {SvgIcon} from "@mui/material";
+import UserContext from "../../context/userContext";
 
 function PlaceDetail():JSX.Element {
   const { isLoaded } = useLoadScript({
@@ -16,6 +17,19 @@ function PlaceDetail():JSX.Element {
   const { id } = useParams()
   const [coordinates, setCoordinates] = useState({ lat: 49.19578860752985, lng: 16.606112965870675 })
   const [spot, setSpot] = useState<Spot>()
+  const [likes, setLikes] = useState<Like>()
+
+  const { userData, setUserData } = useContext(UserContext);
+
+  const fetchLikes = async () => {
+    try {
+      const response = await axios.get("http://localhost:8000/api/spots/likes/" + id,
+        { headers: { "Authorization": "Bearer " + userData.token } })
+      setLikes(response.data)
+    } catch (e) {
+      console.log(e)
+    }
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,14 +42,19 @@ function PlaceDetail():JSX.Element {
       }
     }
     fetchData().catch(console.error)
+    fetchLikes().catch(console.error)
+
   }, [])
 
   const like = async () => {
     try {
-      const likeRes = await axios.post("")
+      const likeRes = await axios.patch("http://localhost:8000/api/spots/likes/" + id + "/",
+        {},
+        { headers: { "Authorization": "Bearer " + userData.token } })
     } catch (e) {
       console.log(e)
     }
+    fetchLikes().catch(console.error)
   }
 
   return (
@@ -61,7 +80,15 @@ function PlaceDetail():JSX.Element {
             <>
               <div className={"spot__header-wrapper"}>
                 <h2>{spot?.name}</h2>
-                <a onClick={like}><SvgIcon component={ThumbUpOutlinedIcon} fontSize={"large"}/></a>
+                {
+                  likes?.user_in ?
+                    <a onClick={like} style={{color: "#FF4D00"}}>
+                      <SvgIcon component={ThumbUpOutlinedIcon} fontSize={"large"}/>
+                    </a> :
+                    <a onClick={like}>
+                      <SvgIcon component={ThumbUpOutlinedIcon} fontSize={"large"}/>
+                    </a>
+                }
               </div>
               <p className={"coordinate"}>Latitude: {spot?.latitude}</p>
               <p className={"coordinate"}>Longitude: {spot?.longitude}</p>
@@ -73,10 +100,14 @@ function PlaceDetail():JSX.Element {
                   <p style={{marginBottom: 0}}>Created by:</p>
                   <Link to={"/user/" + spot?.owner.id} style={{marginTop: 0}} className={"text--large"}><b>{spot?.owner.username}</b></Link>
                 </div>
-                <div>
-                  <p style={{marginBottom: 0}}>People liked:</p>
-                  <p style={{marginTop: 0}} className={"text--large"}><b>{spot?.likes}</b></p>
-                </div>
+                {
+                  !likes?.likes === undefined ?
+                    <></> :
+                    <div>
+                      <p style={{marginBottom: 0}}>People liked:</p>
+                      <p style={{marginTop: 0}} className={"text--large"}><b>{likes?.likes}</b></p>
+                    </div>
+                }
               </div>
               {
                 !spot?.description ?
@@ -154,6 +185,46 @@ function PlaceDetail():JSX.Element {
                     <p style={{marginTop: 0}} className={"text--large"}>{spot.type_specific_data.path_description}</p>
                   </>
               }
+              <div>
+                asjkdf bqwehbf asjhbf
+                 ajhsdvfb hqwef asddf hbukhwqjeevf asd
+                df qhuwevf asjhdldfv qwe
+                -f- ashsugdfv oqgwehj f
+                -asddfgvhuwe vfuhpasdbf
+                we-0 fugasudvdf ghwjevh ff
+                =0sdfdguvwe  fpuyuiu sabd df-
+                0[wqe uf[ygiasd df uygbe pufy hasd
+                =f uqweoeut vasdsouydfb
+                w=e=ffu hustdd vfuqwyej f0][0psaif 97uwgewe f8yiuwhe ef
+                0s f[iyg qweutofvsaddofij 7=qwe
+                 fpyupuhsa dvfpwoqepi ff
+                08]sydgfygwe
+                fpuyuygwqef9
+                jskdsf
+                -hiwe e8y8yifiusdhf iugqweh f
+                =]s-a f iygwqeb effygpisufuh r  pwiyegfbousydgd fb-q
+                e0[ef f9gufb uweygjf pisudhfj
+                wqe f8ysidhg bouweyg sydidfbilwe f7
+                =we f]9asou gf b8ewiugf s
+                ddf qwpueyhf sop'd f
+                =qwe[0 fsoudfqwhewj0opf
+                =wew[0fo hasoeuakgfjh we=
+                e]-[ fiufn f-ae\e9[uof jp\p0[f u[qowrmf
+                -w\qe[ fg vbwe f
+                -pwhef [owue jf [gisdn f
+                f-\p 9uhwb rf[ohwenf ]sbdn f
+                08hiwem =
+                e[d[figuh we]09pfu j[9eohsfd shodjf f
+                we[ f]9[gsdun f
+                [0we gfvbsd
+                =f [uwebbfoc csidbf woeufh pasiduhf w-q\e[ f0]os8'hdn f]-\[w0'ep fiysvhdbd f
+                ]w-e rf[gidf
+                awefouh s-d0fu ygweqh]-[f-n
+                s0\dpfpvwibef o[sidufh
+                =wefpuisd f]0[weouhf j
+                sd[0ouf hso';f i n \-plwegbf f'p/s;s.d yfhgv;wpe'
+                \sdfi;oWE
+              </div>
             </>
         }
       </div>

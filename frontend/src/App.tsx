@@ -5,6 +5,8 @@ import Homepage from "./pages/homepage/Homepage";
 
 import UserContext from "./context/userContext";
 import SearchContext from "./context/searchContext";
+import MapContext from "./context/mapContext";
+import ReloadContext from "./context/reloadContext";
 
 import axios from "axios";
 
@@ -14,6 +16,7 @@ import Profile from "./pages/user/Profile";
 import GamesMenu from "./pages/games/GamesMenu";
 import PlaceDetail from "./pages/place/PlaceDetail";
 import CreatePlace from "./pages/place/CreatePlace";
+import {useLoadScript} from "@react-google-maps/api";
 
 function App() {
   // User context
@@ -21,6 +24,14 @@ function App() {
     token: undefined,
     id: undefined,
   });
+
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: "AIzaSyA71RHhLabJaCTd4oYQwZGAcF2Luxcnf5s",
+  });
+
+  const [forceReload, setForceReload] = useState<number>(0)
+
+  console.log(isLoaded)
 
   const [searchType, setSearchType] = useState<string>("all")
 
@@ -53,33 +64,37 @@ function App() {
     <div className="App">
       <UserContext.Provider value={{userData, setUserData}}>
         <SearchContext.Provider value={{searchType, setSearchType}}>
-          <Navigation/>
-          <Routes>
-            <Route
-              path={"/"}
-              element={<Homepage/>}
-            />
-            <Route
-              path={"/login"}
-              element={<Login/>}
-            />
-            <Route
-              path={"/profile"}
-              element={<Profile/>}
-            />
-            <Route
-              path={"/games"}
-              element={<GamesMenu/>}
-            />
-            <Route
-              path={"/detail/:id"}
-              element={<PlaceDetail/>}
-            />
-            <Route
-              path={"/create/"}
-              element={<CreatePlace/>}
-            />
-          </Routes>
+          <MapContext.Provider value={{isLoaded}}>
+            <ReloadContext.Provider value={{forceReload, setForceReload}}>
+              <Navigation/>
+              <Routes>
+                <Route
+                  path={"/"}
+                  element={<Homepage/>}
+                />
+                <Route
+                  path={"/login"}
+                  element={<Login/>}
+                />
+                <Route
+                  path={"/profile"}
+                  element={<Profile/>}
+                />
+                <Route
+                  path={"/games"}
+                  element={<GamesMenu/>}
+                />
+                <Route
+                  path={"/detail/:id"}
+                  element={<PlaceDetail/>}
+                />
+                <Route
+                  path={"/create/"}
+                  element={<CreatePlace/>}
+                />
+              </Routes>
+            </ReloadContext.Provider>
+          </MapContext.Provider>
         </SearchContext.Provider>
       </UserContext.Provider>
       <div

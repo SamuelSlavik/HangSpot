@@ -3,10 +3,15 @@ import axios from "axios";
 import {useParams, Link, useNavigate} from "react-router-dom"
 
 import UserContext from "../../context/userContext";
+import ReloadContext from "../../context/reloadContext";
+
+
 
 import {CoordinatesInterface, Spot, Type} from "../../types/interfaces"
 import {GoogleMap, Marker, useLoadScript} from "@react-google-maps/api";
 import Login from "../user/Login";
+import mapContext from "../../context/mapContext";
+import reloadContext from "../../context/reloadContext";
 
 // FUnction begining
 
@@ -15,6 +20,10 @@ function CreatePlace():JSX.Element {
   const [coordinates, setCoordinates] = useState<CoordinatesInterface>({lat: 0, lng: 0})
   const [spot_type, setSpot_Type] = useState<string>()
   const [description, setDescription] = useState()
+
+  const {isLoaded} = useContext(mapContext)
+
+  const {forceReload, setForceReload} = useContext(ReloadContext)
 
   const navigate = useNavigate();
 
@@ -28,10 +37,6 @@ function CreatePlace():JSX.Element {
   const owner = useMemo(() => (userData.id), [userData])
 
   const newMarker = useMemo(() => ({ lat: coordinates.lat , lng: coordinates.lng }), [coordinates]);
-
-  const { isLoaded } = useLoadScript({
-    googleMapsApiKey: "AIzaSyA71RHhLabJaCTd4oYQwZGAcF2Luxcnf5s",
-  });
 
   const [spot, setSpot] = useState<Spot>()
 
@@ -54,11 +59,12 @@ function CreatePlace():JSX.Element {
       "Content-Type": "application/json",
     };
     try {
-      const createRes = await axios.post(
+      const createRes:any = await axios.post(
         "http://localhost:8000/api/spots/create/",
         {name, spot_type, owner, latitude, longitude},
         {headers: headers}
       )
+      setForceReload(forceReload + 1)
     } catch (e) {
       console.log(e)
     }
@@ -107,7 +113,12 @@ function CreatePlace():JSX.Element {
               value={"create"}
               onClick={submit}
             />
-            <select onChange={(e) => {setSpot_Type(e.target.value)}}>
+            <select
+              onChange={(e) => {setSpot_Type(e.target.value)}}
+            >
+              <option value={''}>
+                Select category
+              </option>
               {
                 allTypes.map(({type_name, display_name}) => (
                   <option value={type_name}>
