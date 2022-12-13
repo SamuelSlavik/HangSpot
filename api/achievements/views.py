@@ -14,8 +14,9 @@ def get_user_achievements_view(request, *args, **kwargs):
         if not request.user.is_authenticated:
             raise NotAuthenticated()
         user_id = request.user.id
-    achievements = AchievementSerializer(Achievements().get_achievements(user_id), many=True)
+    achievements = Achievements()
+    achieved = achievements.get_achievements(user_id)
+    achievements_serializer = AchievementSerializer(achieved, many=True)
+    achievements.reset()
 
-    return Response(achievements.data)
-
-
+    return Response(achievements_serializer.data)

@@ -15,6 +15,10 @@ class Achievements:
         achievements = self.Displays(user.displays.count()).current_tiers
         return achievements
 
+    def reset(self):
+        self.Achievement.achievements = list()
+        self.Achievement.current_tiers = list()
+
     class Achievement:
         achievements = list()
         comparator = None
