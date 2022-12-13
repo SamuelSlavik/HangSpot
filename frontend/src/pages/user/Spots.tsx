@@ -19,14 +19,25 @@ function Spots():JSX.Element {
 
   const { userData, setUserData } = useContext(UserContext);
 
-  useEffect(() => {
-    const fetchAchievements = async () => {
-      const res = await axios.get<Spot[]>("http://localhost:8000/api/spots/user/" + userData.id + "/",
-        { headers: { "Authorization": "Bearer " + userData.token } },)
-      setSpotsData(res.data)
+  const fetchSpots = async () => {
+    const res = await axios.get<Spot[]>("http://localhost:8000/api/spots/user/" + userData.id + "/",
+      { headers: { "Authorization": "Bearer " + userData.token } },)
+    setSpotsData(res.data)
+  }
+
+  const deleteSpot = async (id: any) => {
+    try {
+      const res = await axios.delete("http://localhost:8000/api/spots/destroy/" + id + "/",
+        {headers: { "Authorization": "Bearer " + userData.token }} )
+      fetchSpots().catch(console.error)
+    } catch (e) {
+      console.log(e)
     }
-    fetchAchievements().catch(console.error)
-  }, [userData]);
+  }
+
+  useEffect(() => {
+    fetchSpots().catch(console.error)
+  }, []);
 
   return (
     <div className={"profile__spots"}>
@@ -45,7 +56,7 @@ function Spots():JSX.Element {
                </div>
                <div className={"spot-actions"}>
                  <p><a><SvgIcon component={CreateIcon}/></a></p>
-                 <p><a><SvgIcon component={DeleteIcon}/></a></p>
+                 <p><a onClick={() => deleteSpot(id)}><SvgIcon component={DeleteIcon}/></a></p>
                  <p>3</p>
                </div>
              </div>
