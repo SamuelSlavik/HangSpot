@@ -32,7 +32,7 @@ class Achievements:
             for achievement in self.achievements:
                 skip = False
                 for idx, value in enumerate(achievement['tiers']):
-                    if value >= self.comparator:
+                    if value > self.comparator:
                         self.current_tiers.append({
                             'current_tier': idx,
                             'total_tiers': len(achievement['tiers']),

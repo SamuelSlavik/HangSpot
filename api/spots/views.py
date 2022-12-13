@@ -9,11 +9,13 @@ from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
 from rest_framework.decorators import api_view
 
-from .models import SpotCommon, SkateSpot, BMXSpot, WalkSpot, PicnicSpot, SunsetSpot, SpotType
+from .models import SpotCommon, SkateSpot, BMXSpot, WalkSpot, PicnicSpot, SunsetSpot, SpotType, SpotImage
 from .serializers import (
     SpotSerializer,
     SpotTypeSerializer,
     SpotCommonSerializer,
+    SpotImageManageSerializer,
+    SpotImageDisplaySerializer,
 )
 
 
@@ -110,6 +112,13 @@ class SpotDestroyView(generics.DestroyAPIView):
     queryset = SpotCommon.objects.all()
     serializer_class = SpotSerializer
 
+    def perform_destroy(self, instance):
+        spot_id = instance.id
+        qs = SpotImage.objects.filter(spot__id=spot_id)
+        if qs.exists():
+            qs.delete()
+        return super().perform_destroy(instance)
+
 
 class SpotTypeListView(generics.ListAPIView):
     serializer_class = SpotTypeSerializer
@@ -164,3 +173,51 @@ class DisplaySpotView(generics.RetrieveUpdateAPIView):
         spot = self.get_object()
         return Response({'displays': spot.displays.count()})
 
+
+class DisplaySpotImagesView(generics.ListAPIView):
+    queryset = SpotImage.objects.all()
+    serializer_class = SpotImageDisplaySerializer
+
+    def filter_queryset(self, queryset):
+        qs = queryset.filter(spot_id=self.kwargs.get('pk'))
+        return qs
+
+
+class UploadSpotImagesView(generics.CreateAPIView):
+    queryset = SpotImage.objects.all()
+    serializer_class = SpotImageDisplaySerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def create(self, request, *args, **kwargs):
+        spot_id = kwargs.pop('pk')
+        try:
+            spot = SpotCommon.objects.get(pk=spot_id)
+        except SpotCommon.DoesNotExist:
+            raise NotFound(detail='Spot not found')
+        qs = self.get_queryset().filter(spot__id=spot_id)
+        if qs.exists():
+            qs.delete()
+        images = request.FILES.getlist('files')
+        allowed_ext = ['png', 'jpg', 'jpeg', 'webp']
+        for image in images:
+            ext = image.name.split('.')[-1]
+            if ext not in allowed_ext:
+                return Response({'detail': 'Forbidden extension'}, status=418)
+        for image in images:
+            SpotImage.objects.create(spot=spot, image=image)
+        qs = self.get_queryset().filter(spot__id=spot_id)
+        serializer_class = self.get_serializer_class()
+        serializer = serializer_class(qs, many=True)
+        return Response(serializer.data, status=201)
+
+
+class DestroySpotImagesView(generics.DestroyAPIView):
+    queryset = SpotImage.objects.all()
+    serializer_class = SpotImageManageSerializer
+    lookup_field = 'spot'
+
+    def destroy(self, request, *args, **kwargs):
+        qs = self.get_queryset().filter(spot__id=kwargs.pop('spot'))
+        if qs.exists():
+            qs.delete()
+        return Response(status=204)
