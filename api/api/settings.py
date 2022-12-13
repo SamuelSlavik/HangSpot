@@ -49,6 +49,8 @@ INSTALLED_APPS = [
 
     'userauth',
     'spots',
+    'achievements',
+    'games',
 ]
 
 MIDDLEWARE = [
