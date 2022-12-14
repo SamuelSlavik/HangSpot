@@ -10,6 +10,10 @@
     background-color: $lighter-gray;
     color: $black;
     @include transition-fast;
+    @media all and (max-width: $break-1){
+      width: 100%;
+      padding: 4%;
+    }
 
     &:hover, &:active, &:focus {
       border-color: $orange;
@@ -26,6 +30,11 @@
     background-color: $orange;
     color: $white;
     @include transition-fast;
+    @media all and (max-width: $break-1){
+      width: 100%;
+      padding: 5%;
+      margin-top: 5%;
+    }
 
     &:hover, &:active, &:focus {
       border-color: $orange;

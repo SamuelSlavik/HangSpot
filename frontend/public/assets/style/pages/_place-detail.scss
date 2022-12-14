@@ -3,11 +3,18 @@
   min-height: 100vh;
   display: flex;
   justify-content: space-between;
+  @media all and (max-width: $break-1){
+    display: block;
+  }
 
   &__map {
     height: 100vh;
     width: 50%;
     margin: 0;
+    @media all and (max-width: $break-1){
+      width: 100%;
+      height: 90vh;
+    }
   }
   .spot__map-inner {
     width: 100%;
@@ -30,11 +37,75 @@
     overflow: auto;
     overflow-y: scroll;
     height: 100vh;
+    @media all and (max-width: $break-1){
+      width: 100%;
+    }
 
     .coordinate {
       color: $light-gray;
       font-size: 1.3em;
       margin: 0;
+    }
+    .spot__images {
+      width: 100%;
+      display: flex;
+      justify-content: left;
+      flex-wrap: wrap;
+      gap: 5%;
+
+      .image-wrapper {
+        background-color: $light-gray;
+        position: relative;
+        width: 47.5%;
+        margin-top: 0;
+        margin-bottom: 5%;
+        height: auto;
+        display: block;
+        padding: 0;
+        @media all and (max-width: $break-1){
+          width: 100%;
+        }
+
+        img {
+          position: relative;
+          width: 100% !important;
+          margin: auto;
+          height: auto;
+          top: 50%;
+          transform: translateY(-50%);
+          display: block;
+        }
+      }
+    }
+    .images--small {
+      background-color: $light-gray;
+      position: relative;
+      width: 26% ;
+      margin-top: 0;
+      margin-bottom: 5%;
+      height: auto;
+      display: block;
+      padding: 0;
+      @media all and (max-width: $break-1){
+        width: 45%;
+      }
+
+      .image-delete {
+        position: absolute;
+        top: 5%;
+        right: 5%;
+        color: red;
+        z-index: 2;
+      }
+      img {
+        position: relative;
+        width: 100% !important;
+        margin: auto;
+        height: auto;
+        top: 50%;
+        transform: translateY(-50%);
+        display: block;
+      }
     }
   }
   &__display-flex {

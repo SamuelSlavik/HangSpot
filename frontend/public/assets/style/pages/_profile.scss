@@ -7,12 +7,22 @@
   padding: 10% 10% 10% 10%;
   display: flex;
   justify-content: space-between;
+  @media all and (max-width: $break-1){
+    display: block;
+    padding: 100px 5%;
+  }
 
   &__left {
     width: 40%;
+    @media all and (max-width: $break-1){
+      width: 100%;
+    }
   }
   &__spots {
     width: 55%;
+    @media all and (max-width: $break-1){
+      width: 100%;
+    }
   }
   &__spot {
     width: 100%;
@@ -20,11 +30,18 @@
     display: flex;
     justify-content: space-between;
     margin-bottom: 10%;
+    position: relative;
+    @media all and (max-width: $break-1){
+      display: block;
+    }
 
     .spot-image {
       width: 25%;
       height: auto;
       margin-top: 0;
+      @media all and (max-width: $break-1){
+        width: 100%;
+      }
 
       img {
         width: 100%;
@@ -56,6 +73,20 @@
     .spot-actions {
       width: fit-content;
       margin-top: 0;
+      @media all and (max-width: $break-1){
+        display: flex;
+        gap: 10%;
+        justify-content: right;
+        float: left;
+        width: 100%;
+        position: absolute;
+        top: 1%;
+        right: 3%;
+        svg {
+          font-size: 2em;
+          color: $orange;
+        }
+      }
     }
   }
   &__info {
@@ -77,6 +108,9 @@
   &__achievements {
     width: 100%;
     padding: 5% 10% 5% 10%;
+    @media all and (max-width: $break-1){
+      margin-bottom: 20%;
+    }
   }
   &__achievement {
     width: 100%;

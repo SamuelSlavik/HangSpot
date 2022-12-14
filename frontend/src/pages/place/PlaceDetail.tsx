@@ -2,12 +2,13 @@ import React, {useContext, useEffect, useMemo, useState} from "react"
 import axios from "axios";
 import {useParams, Link} from "react-router-dom"
 
-import {Like, Spot, SpotForTheFuckinDetail} from "../../types/interfaces"
+import {Like, Spot, SpotDetail, Image} from "../../types/interfaces"
 import {GoogleMap, Marker, useLoadScript} from "@react-google-maps/api";
 
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import {SvgIcon} from "@mui/material";
 import UserContext from "../../context/userContext";
+import mapContext from "../../context/mapContext";
 
 function PlaceDetail():JSX.Element {
   const { isLoaded } = useLoadScript({
@@ -16,9 +17,9 @@ function PlaceDetail():JSX.Element {
 
   const { id } = useParams()
   const [coordinates, setCoordinates] = useState({ lat: 49.19578860752985, lng: 16.606112965870675 })
-  const [spot, setSpot] = useState<SpotForTheFuckinDetail>()
+  const [spot, setSpot] = useState<SpotDetail>()
   const [likes, setLikes] = useState<Like>()
-  const [images, setImages] = useState<any>()
+  const [imagesData, setImagesData] = useState<Image[]>()
 
   const { userData, setUserData } = useContext(UserContext);
 
@@ -47,9 +48,9 @@ function PlaceDetail():JSX.Element {
   }
   const fetchImages = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/spots/images/get/" + id,
+      const response = await axios.get<Image[]>("http://localhost:8000/api/spots/images/get/" + id,
         { headers: { "Authorization": "Bearer " + userData.token } })
-      setImages(response.data)
+      setImagesData(response.data)
     } catch (e) {
       console.log(e)
     }
@@ -59,7 +60,7 @@ function PlaceDetail():JSX.Element {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get<SpotForTheFuckinDetail>("http://localhost:8000/api/spots/get/" + id)
+        const response = await axios.get<SpotDetail>("http://localhost:8000/api/spots/get/" + id)
         setSpot(response.data)
         setCoordinates({lat: response.data.latitude, lng: response.data.longitude})
       } catch (e) {
@@ -69,7 +70,7 @@ function PlaceDetail():JSX.Element {
     fetchData().catch(console.error)
     fetchLikes().catch(console.error)
     fetchImages().catch(console.error)
-  }, [])
+  }, [userData])
 
   const like = async () => {
     try {
@@ -156,11 +157,6 @@ function PlaceDetail():JSX.Element {
                   </>
               }
               {
-                !images ?
-                  <></>  :
-                  <img alt={"Image"} src={images[0].image_url}/>
-              }
-              {
                 !spot?.park_near ?
                   <></> :
                   <>
@@ -230,10 +226,23 @@ function PlaceDetail():JSX.Element {
                     <p style={{marginTop: 0}} className={"text--large"}>{spot.path_description}</p>
                   </>
               }
+              <br/>
+              {
+                !imagesData ?
+                  <></>  :
+                  <div className={"spot__images"}>
+                    {
+                      imagesData.map(({id, image_url}) => (
+                        <div className={"image-wrapper"}>
+                          <img id={"image" + id} alt={"Image"} src={image_url}/>
+                        </div>
+                      ))
+                    }
+                  </div>
+              }
             </>
         }
       </div>
-      <>{console.log(images)}</>
     </div>
   )
 }

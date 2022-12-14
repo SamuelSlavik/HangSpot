@@ -166,7 +166,6 @@ function CreatePlace():JSX.Element {
           <p>Latitude: {coordinates.lat ? coordinates.lat : ""}</p>
           <p>Longitude: {coordinates.lng ? coordinates.lng : ""}</p>
           <br/>
-          <br/>
           <form onSubmit={submit}>
             <input
               type={"text"}
@@ -208,8 +207,9 @@ function CreatePlace():JSX.Element {
                 className={"input"}
                 type="file"
                 id={"createImages"}
+                multiple
                 // @ts-ignore
-                onChange={(e) => setImages( e.target.files[0])}
+                onChange={(e) => setImages( [...e.target.files] )}
               />
             </div>
             <div>

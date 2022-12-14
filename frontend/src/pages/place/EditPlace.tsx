@@ -2,11 +2,12 @@ import React, {useContext, useEffect, useMemo, useState} from "react"
 import axios from "axios";
 import {useParams, Link, useNavigate} from "react-router-dom"
 
-import {CoordinatesInterface, Like, Spot, SpotForTheFuckinDetail, Type} from "../../types/interfaces"
+import {CoordinatesInterface, Image, Like, Spot, SpotDetail, Type} from "../../types/interfaces"
 import {GoogleMap, Marker, useLoadScript} from "@react-google-maps/api";
 
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import {SvgIcon} from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
 import UserContext from "../../context/userContext";
 import mapContext from "../../context/mapContext";
 import ReloadContext from "../../context/reloadContext";
@@ -14,10 +15,37 @@ import TimeInput from "react-input-time";
 
 function EditPlace():JSX.Element {
   const [spot, setSpot] = useState<Spot>()
+  const [imagesData, setImagesData] = useState<Image[]>()
+
+  const {userData} = useContext(UserContext)
+
+  const fetchImages = async () => {
+    try {
+      const response = await axios.get<Image[]>("http://localhost:8000/api/spots/images/get/" + id,
+        { headers: { "Authorization": "Bearer " + userData.token } })
+      setImagesData(response.data)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  const deleteImage = async (imageId:any) => {
+    try {
+      const response = await axios.delete(
+        "http://localhost:8000/api/spots/image/destroy/" + imageId + "/",
+      )
+    } catch (e:any) {
+      console.log(e)
+      alert(e.response.data.detail)
+    }
+    fetchImages().catch(console.error)
+  }
+
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get<SpotForTheFuckinDetail>("http://localhost:8000/api/spots/get/" + id)
+        const response = await axios.get<SpotDetail>("http://localhost:8000/api/spots/get/" + id)
         setSpot(response.data)
         setCoordinates({lat: response.data.latitude, lng: response.data.longitude})
         setName(response.data.name)
@@ -38,8 +66,9 @@ function EditPlace():JSX.Element {
       }
     }
     fetchData().catch(console.error)
+    fetchImages().catch(console.error)
 
-  }, [])
+  }, [userData])
 
   const { id } = useParams()
 
@@ -68,7 +97,6 @@ function EditPlace():JSX.Element {
   const latitude = useMemo(() => (coordinates.lat), [coordinates])
   const longitude = useMemo(() => (coordinates.lng), [coordinates])
 
-  const {userData, setUserData} = useContext(UserContext)
 
   const owner = useMemo(() => (userData.id), [userData])
 
@@ -106,15 +134,15 @@ function EditPlace():JSX.Element {
           {headers: headers}
         )
         setForceReload(forceReload + 1)
-        /*const imagesRes:any = await axios.post(
-          "http://localhost:8000/api/spots/images/upload/" + createRes.data.id + "/",
+        const imagesRes:any = await axios.post(
+          "http://localhost:8000/api/spots/images/update/" + createRes.data.id + "/",
           {images},
           { headers: {
               "Authorization": "Bearer " + userData.token,
               "Content-Type": "multipart/form-data",
             }
           }
-        )*/
+        )
       } else if (spot_type === "bmx" || "skateboard") {
         const createRes:any = await axios.patch(
           "http://localhost:8000/api/spots/get/" + id + "/",
@@ -122,15 +150,15 @@ function EditPlace():JSX.Element {
           {headers: headers}
         )
         setForceReload(forceReload + 1)
-        /*const imagesRes:any = await axios.post(
-          "http://localhost:8000/api/spots/images/upload/" + createRes.data.id + "/",
+        const imagesRes:any = await axios.post(
+          "http://localhost:8000/api/spots/images/update/" + createRes.data.id + "/",
           {images},
           { headers: {
               "Authorization": "Bearer " + userData.token,
               "Content-Type": "multipart/form-data",
             }
           }
-        )*/
+        )
       } else {
         const createRes:any = await axios.patch(
           "http://localhost:8000/api/spots/get/" + id + "/",
@@ -138,15 +166,15 @@ function EditPlace():JSX.Element {
           {headers: headers}
         )
         setForceReload(forceReload + 1)
-        /*const imagesRes:any = await axios.post(
-          "http://localhost:8000/api/spots/images/upload/" + createRes.data.id + "/",
+        const imagesRes:any = await axios.post(
+          "http://localhost:8000/api/spots/images/update/" + createRes.data.id + "/",
           {images},
           { headers: {
               "Authorization": "Bearer " + userData.token,
               "Content-Type": "multipart/form-data",
             }
           }
-        )*/
+        )
       }
     } catch (e) {
       console.log(e)
@@ -178,7 +206,6 @@ function EditPlace():JSX.Element {
         <div className={"spot__content"}>
           <p>Latitude: {coordinates.lat ? coordinates.lat : ""}</p>
           <p>Longitude: {coordinates.lng ? coordinates.lng : ""}</p>
-          <br/>
           <br/>
           <form onSubmit={submit}>
             <input
@@ -214,8 +241,9 @@ function EditPlace():JSX.Element {
                 className={"input"}
                 type="file"
                 id={"createImages"}
+                multiple
                 // @ts-ignore
-                onChange={(e) => setImages( e.target.files[0])}
+                onChange={(e) => setImages( [...e.target.files] )}
               />
             </div>
             <div>
@@ -354,6 +382,21 @@ function EditPlace():JSX.Element {
                 /> :
                 <></>
             }
+            <div className={"spot__images"}>
+              {
+                !imagesData ?
+                  <></>  :
+                  imagesData.map(({id, image_url}) => (
+                    <div className={"images--small"}>
+                      <a onClick={() => deleteImage(id)} className={"image-delete"}><SvgIcon component={DeleteIcon} fontSize={"large"}/></a>
+                      <img className={""} id={"image" + id} alt={"Image"} src={image_url}/>
+                    </div>
+                  ))
+              }
+            </div>
+            <br/>
+            <br/>
+            <br/>
             <input
               type={"submit"}
               className={"submit"}
