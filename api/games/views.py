@@ -62,8 +62,7 @@ def get_random_game_spot_view(request, *args, **kwargs):
 
 def _get_spotfinder_result(request, serializer_class):
     data = request.data
-    spot_id = data.get('spot')
-    image_url = data.get('image')
+    spot_id = data.get('spot_id')
     spot = SpotCommon.objects.get(pk=spot_id)
     lat_real = float(spot.latitude)
     lng_real = float(spot.longitude)
@@ -81,8 +80,22 @@ def _get_spotfinder_result(request, serializer_class):
     distance = np.divide(r * c, 1000)
 
     result = 5000 * np.power(np.e, np.divide(distance, -2000))
-    context = {'points': int(np.round(result)), 'distance': np.round(distance, 3), 'image_url': image_url}
-    serializer = serializer_class(spot, context=context)
+    result_dict = {
+        'points': int(np.round(result)),
+        'distance': np.round(distance, 3),
+        'real_coordinates': {
+            'latitude': lat_real,
+            'longitude': lng_real,
+        },
+        'guess_coordinates': {
+            'latitude': lat_guess,
+            'longitude': lng_guess,
+        },
+    }
+    serializer = serializer_class(result_dict)
+
+    if request.user.is_authenticated:
+        _update_spotfinder_stats(result_dict, request.user.id)
 
     return serializer
 
@@ -92,9 +105,6 @@ def get_game_result_view(request, *args, **kwargs):
     game_name = kwargs.pop('game_name')
     serializer_class = _get_game_result_serializer_class(game_name)
     serializer = _get_spotfinder_result(request, serializer_class)
-
-    if request.user.is_authenticated:
-        _update_spotfinder_stats(serializer.data.get('result'), request.user.id)
 
     return Response(serializer.data, status=200)
 
