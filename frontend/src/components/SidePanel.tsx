@@ -1,17 +1,13 @@
 import React, {useState, useEffect, useContext} from "react";
 import axios from "axios";
-
 // Structures and modules
 import css from "*.scss";
 import {Type} from "../types/interfaces";
-
 // Global context
 import SearchContext from "../context/searchContext";
-
 // Icons
 import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined';
 import {SvgIcon} from "@mui/material";
-
 // Functions
 import {toggleSidePanelOff} from "../functions/toggleSidePanel";
 
