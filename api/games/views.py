@@ -7,15 +7,15 @@ from rest_framework.response import Response
 from spots.models import SpotCommon, SpotImage
 
 from .serializers import (
-    GeoGuesserSpotSerializer,
-    GeoGuesserResultSerializer
+    SpotFinderSpotSerializer,
+    SpotFinderResultSerializer
 )
 from userauth.models import User
 
 
 def _get_game_serializer_class(name):
     game_serializers = {
-        'geoguesser': GeoGuesserSpotSerializer
+        'spotfinder': SpotFinderSpotSerializer
     }
 
     for game_name, serializer_class in game_serializers.items():
@@ -26,7 +26,7 @@ def _get_game_serializer_class(name):
 
 def _get_game_result_serializer_class(name):
     game_serializers = {
-        'geoguesser': GeoGuesserResultSerializer
+        'spotfinder': SpotFinderResultSerializer
     }
 
     for game_name, serializer_class in game_serializers.items():
@@ -60,7 +60,7 @@ def get_random_game_spot_view(request, *args, **kwargs):
     return Response(chosen_spot_serializer.data, status=200)
 
 
-def _get_geoguesser_result(request, serializer_class):
+def _get_spotfinder_result(request, serializer_class):
     data = request.data
     spot_id = data.get('spot')
     image_url = data.get('image')
@@ -91,15 +91,15 @@ def _get_geoguesser_result(request, serializer_class):
 def get_game_result_view(request, *args, **kwargs):
     game_name = kwargs.pop('game_name')
     serializer_class = _get_game_result_serializer_class(game_name)
-    serializer = _get_geoguesser_result(request, serializer_class)
+    serializer = _get_spotfinder_result(request, serializer_class)
 
     if request.user.is_authenticated:
-        _update_geoguesser_stats(serializer.data.get('result'), request.user.id)
+        _update_spotfinder_stats(serializer.data.get('result'), request.user.id)
 
     return Response(serializer.data, status=200)
 
 
-def _update_geoguesser_stats(result, user_id):
+def _update_spotfinder_stats(result, user_id):
     user = User.objects.get(pk=user_id)
     points = result['points']
     user.geo_total += points
