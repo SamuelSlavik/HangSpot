@@ -19,7 +19,6 @@ function Homepage():JSX.Element {
   return (
     <div className={"homepage"}>
       <SidePanel />
-
       <div className={"map-wrapper"}>
         {(!isLoaded) ? <div>Loading...</div> : <Map />}
       </div>

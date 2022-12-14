@@ -30,8 +30,10 @@ function Spots():JSX.Element {
       const res = await axios.delete("http://localhost:8000/api/spots/destroy/" + id + "/",
         {headers: { "Authorization": "Bearer " + userData.token }} )
       fetchSpots().catch(console.error)
-    } catch (e) {
+      alert("succesfuly deleted")
+    } catch (e:any) {
       console.log(e)
+      alert(e.response.data.detail)
     }
   }
 
