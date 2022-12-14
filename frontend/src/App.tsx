@@ -15,6 +15,7 @@ import GamesMenu from "./pages/games/GamesMenu";
 import PlaceDetail from "./pages/place/PlaceDetail";
 import CreatePlace from "./pages/place/CreatePlace";
 import EditPlace from "./pages/place/EditPlace";
+import SpotFinder from "./pages/games/SpotFinder";
 // Google maps api
 import {useLoadScript} from "@react-google-maps/api";
 
@@ -92,6 +93,10 @@ function App() {
                 <Route
                   path={"/edit/:id"}
                   element={<EditPlace/>}
+                />
+                <Route
+                  path={"/games/spot-finder"}
+                  element={<SpotFinder/>}
                 />
               </Routes>
             </ReloadContext.Provider>
