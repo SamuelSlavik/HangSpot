@@ -1,24 +1,22 @@
 import {useContext, useEffect, useMemo, useState} from "react";
-import { GoogleMap, Marker } from "@react-google-maps/api";
-
-import {Link, useNavigate} from "react-router-dom";
-
-
-import {Spot} from "../../types/interfaces"
 import axios from "axios";
-
+import {useNavigate} from "react-router-dom";
+// Google maps api
+import { GoogleMap, Marker } from "@react-google-maps/api";
+// Structures and modules
+import {Spot} from "../../types/interfaces"
+// Global context
 import SearchContext from "../../context/searchContext";
 import ReloadContext from "../../context/reloadContext";
-import MapContext from "../../context/mapContext";
-
-import PushPinIcon from '@mui/icons-material/PushPin';
-
-import {useLoadScript} from "@react-google-maps/api";
-import {SvgIcon, Icon} from "@mui/material";
 
 function Map() {
+  // State
+  const [spots, setSpots] = useState<Spot[]>([])
+  //Global context
+  const {searchType} = useContext(SearchContext)
+  const {forceReload} = useContext(ReloadContext)
+
   const navigate = useNavigate();
-  const [coordinates, setCoordinates] = useState<any>()
 
   const center = useMemo(() => ({ lat: 49.19578860752985, lng: 16.606112965870675 }), []);
   const styles = useMemo(() => ({
@@ -35,12 +33,6 @@ function Map() {
     ]
   }), []);
 
-  const [spots, setSpots] = useState<Spot[]>([])
-
-  const {searchType} = useContext(SearchContext)
-
-  const {forceReload} = useContext(ReloadContext)
-
   useEffect(() => {
     console.log(searchType)
     const fetchData = async () => {
@@ -54,6 +46,7 @@ function Map() {
     fetchData().catch(console.error)
   },[searchType, forceReload])
 
+  // google maps marker styling
   const displayIcon = (color:string)=>{
     let icon =  "https://maps.google.com/mapfiles/ms/icons/" + color + "-dot.png"
     return icon
@@ -65,7 +58,6 @@ function Map() {
         zoom={13}
         center={center}
         mapContainerClassName="map-container"
-        onClick={(e) => {(setCoordinates([e.latLng?.toJSON()]))}}
         options={styles}
       >
         {

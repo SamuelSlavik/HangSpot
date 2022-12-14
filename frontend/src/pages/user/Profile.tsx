@@ -1,22 +1,25 @@
 import React from "react";
 import {useEffect, useState, useContext} from "react";
-import UserContext from "../../context/userContext";
-import Login from "./Login";
 import axios from "axios";
 import {useNavigate} from "react-router-dom"
+// Global state
+import UserContext from "../../context/userContext";
+// Structures and modules
 import {User} from "../../types/interfaces";
+// Components
 import Achievements from "./Achievements";
 import Spots from "./Spots";
-
+// Images
 import profilePhoto from "../../assets/images/profile-photo.jpeg"
 
 
-
 function Profile():JSX.Element {
-  const navigate = useNavigate()
+  // State
+  const [userInfo, setUserInfo] = useState<User>()
+  // Global context
   const { userData, setUserData } = useContext(UserContext);
 
-  const [userInfo, setUserInfo] = useState<User>()
+  const navigate = useNavigate()
 
   useEffect(() => {
     const checkLoggedIn = async () => {
@@ -49,6 +52,7 @@ function Profile():JSX.Element {
     });
     localStorage.setItem("token", "");
     localStorage.setItem("id", "");
+    navigate("/")
   }
 
   return (
@@ -61,7 +65,7 @@ function Profile():JSX.Element {
               <div className={"profile__info"}>
                 {
                   userInfo?.image ?
-                    <p>Profile Image</p> :
+                    <img src={userInfo.image} alt="Profile image"/> :
                     <img alt={"Profile Image"} src={profilePhoto}/>
                 }
                 <h2>{userInfo?.username}</h2>
@@ -73,6 +77,7 @@ function Profile():JSX.Element {
             <Spots />
           </div>
       }
+      <>{console.log(userInfo)}</>
     </div>
   )
 }

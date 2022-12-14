@@ -1,40 +1,36 @@
 import React, {useState, useEffect} from 'react';
 import {Route, Routes} from "react-router";
-import Navigation from "./components/Navigation";
-import Homepage from "./pages/homepage/Homepage";
-
+import axios from "axios";
+// Global context
 import UserContext from "./context/userContext";
 import SearchContext from "./context/searchContext";
 import MapContext from "./context/mapContext";
 import ReloadContext from "./context/reloadContext";
-
-import axios from "axios";
-
-import {toggleSidePanelOff} from "./functions/toggleSidePanel";
+// Components
+import Navigation from "./components/Navigation";
+import Homepage from "./pages/homepage/Homepage";
 import Login from "./pages/user/Login";
 import Profile from "./pages/user/Profile";
 import GamesMenu from "./pages/games/GamesMenu";
 import PlaceDetail from "./pages/place/PlaceDetail";
 import CreatePlace from "./pages/place/CreatePlace";
-import {useLoadScript} from "@react-google-maps/api";
 import EditPlace from "./pages/place/EditPlace";
+// Google maps api
+import {useLoadScript} from "@react-google-maps/api";
 
 function App() {
-  // User context
+  // User context initialization
   const [userData, setUserData] = useState({
     token: undefined,
     id: undefined,
   });
+  const [forceReload, setForceReload] = useState<number>(0)
+  const [searchType, setSearchType] = useState<string>("all")
 
+  // google maps api
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: "AIzaSyA71RHhLabJaCTd4oYQwZGAcF2Luxcnf5s",
   });
-
-  const [forceReload, setForceReload] = useState<number>(0)
-
-  console.log(isLoaded)
-
-  const [searchType, setSearchType] = useState<string>("all")
 
   useEffect(() => {
     const checkLoggedIn = async () => {
@@ -58,8 +54,8 @@ function App() {
       }
     };
     checkLoggedIn().catch(console.error);
-    }, []);
-
+    }, []
+  );
 
   return (
     <div className="App">
@@ -102,11 +98,6 @@ function App() {
           </MapContext.Provider>
         </SearchContext.Provider>
       </UserContext.Provider>
-      <div
-        className={"sidepanel__overlay"}
-        id={"sidePanelOverlay"}
-        onClick={toggleSidePanelOff}
-      ><></></div>
     </div>
   );
 }

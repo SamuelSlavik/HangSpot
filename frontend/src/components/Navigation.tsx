@@ -1,15 +1,15 @@
 import React, {useContext} from "react";
 import {NavLink} from "react-router-dom";
-
 // ICONS //
 import PushPinOutlinedIcon from '@mui/icons-material/PushPinOutlined';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import {SvgIcon} from "@mui/material";
+// Global context
 import UserContext from "../context/userContext";
 
 function Navigation():JSX.Element {
-  const { userData, setUserData } = useContext(UserContext)
+  const { userData } = useContext(UserContext)
 
   return (
     <div className={"navigation"}>

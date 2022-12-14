@@ -18,6 +18,7 @@ function PlaceDetail():JSX.Element {
   const [coordinates, setCoordinates] = useState({ lat: 49.19578860752985, lng: 16.606112965870675 })
   const [spot, setSpot] = useState<SpotForTheFuckinDetail>()
   const [likes, setLikes] = useState<Like>()
+  const [images, setImages] = useState<any>()
 
   const { userData, setUserData } = useContext(UserContext);
 
@@ -44,6 +45,16 @@ function PlaceDetail():JSX.Element {
       console.log(e)
     }
   }
+  const fetchImages = async () => {
+    try {
+      const response = await axios.get("http://localhost:8000/api/spots/images/get/" + id,
+        { headers: { "Authorization": "Bearer " + userData.token } })
+      setImages(response.data)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -57,7 +68,7 @@ function PlaceDetail():JSX.Element {
     }
     fetchData().catch(console.error)
     fetchLikes().catch(console.error)
-
+    fetchImages().catch(console.error)
   }, [])
 
   const like = async () => {
@@ -145,6 +156,11 @@ function PlaceDetail():JSX.Element {
                   </>
               }
               {
+                !images ?
+                  <></>  :
+                  <img alt={"Image"} src={images[0].image_url}/>
+              }
+              {
                 !spot?.park_near ?
                   <></> :
                   <>
@@ -217,6 +233,7 @@ function PlaceDetail():JSX.Element {
             </>
         }
       </div>
+      <>{console.log(images)}</>
     </div>
   )
 }

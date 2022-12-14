@@ -1,29 +1,37 @@
-import React, {useState, useEffect, useContext, useRef} from "react";
-import {NavLink, Link} from "react-router-dom";
+import React, {useState, useEffect, useContext} from "react";
+import axios from "axios";
 
+// Structures and modules
+import css from "*.scss";
+import {Type} from "../types/interfaces";
+
+// Global context
 import SearchContext from "../context/searchContext";
 
-import css from "*.scss";
-
+// Icons
 import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined';
 import {SvgIcon} from "@mui/material";
 
+// Functions
 import {toggleSidePanelOff} from "../functions/toggleSidePanel";
-import axios from "axios";
-import {Type} from "../types/interfaces";
 
+// Function START ///////////////////////////////////////////////////////
 function SidePanel(): JSX.Element {
-  const {searchType, setSearchType} = useContext(SearchContext)
-
+  // State
   const [allTypes, setAllTypes] = useState<Type[]>([])
+  const [error, setError] = useState<any>()
+
+  // Global context
+  const {searchType, setSearchType} = useContext(SearchContext)
 
   useEffect(() => {
     const fetchTypes = async () => {
       try {
         const response = await axios.get("http://localhost:8000/api/spots/types/")
         setAllTypes(response.data)
-      } catch (e) {
+      } catch (e:any) {
         console.log(e)
+        e.response.data.detail && setError(e.response.data.detail)
       }
     }
     fetchTypes().catch(console.error)
@@ -54,6 +62,12 @@ function SidePanel(): JSX.Element {
               {"all"}
             </label>
           </div>
+          {
+            error ?
+              <div className={"error-message__wrapper"}>
+                {error}
+              </div> : <></>
+          }
           {
             !allTypes.length ?
               <></> :
@@ -92,5 +106,4 @@ function SidePanel(): JSX.Element {
   )
 }
 
-// skate, walk, bmx, picnic, sunset
 export default SidePanel

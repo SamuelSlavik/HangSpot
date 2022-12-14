@@ -9,7 +9,10 @@ function Login(): JSX.Element {
   const navigate = useNavigate()
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
+  const [error, setError] = useState<any>();
+
   const { userData, setUserData } = useContext(UserContext);
+
 
   const submit = async (e:any) => {
     e.preventDefault();
@@ -27,8 +30,9 @@ function Login(): JSX.Element {
       });
       localStorage.setItem("token", loginRes.data.access);
       localStorage.setItem("id", loginRes.data.user_id);
-    } catch (e) {
+    } catch (e:any) {
       console.log(e);
+      e.response.data.detail && setError(e.response.data.detail);
     }
   };
 
@@ -65,6 +69,11 @@ function Login(): JSX.Element {
           value={"Log in"}
         />
       </form>
+      <div className={"error-message__wrapper"}>
+        {
+          error ? <p>{error}</p> : <></>
+        }
+      </div>
     </div>
   )
 }
