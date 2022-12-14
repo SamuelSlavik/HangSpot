@@ -177,10 +177,24 @@ class DisplaySpotView(generics.RetrieveUpdateAPIView):
 class DisplaySpotImagesView(generics.ListAPIView):
     queryset = SpotImage.objects.all()
     serializer_class = SpotImageDisplaySerializer
+    permission_classes = [permissions.AllowAny]
 
     def filter_queryset(self, queryset):
         qs = queryset.filter(spot_id=self.kwargs.get('pk'))
         return qs
+
+
+class DisplayFirstSpotImageView(generics.RetrieveAPIView):
+    queryset = SpotImage.objects.all()
+    serializer_class = SpotImageDisplaySerializer
+    permission_classes = [permissions.AllowAny]
+
+    def retrieve(self, request, *args, **kwargs):
+        spot_id = kwargs.pop('pk')
+        qs = self.get_queryset()
+        serializer = self.get_serializer_class()
+        image = serializer(qs.filter(spot_id=spot_id).first(), context={'request': request})
+        return Response(image.data, status=200)
 
 
 class UploadSpotImagesView(generics.CreateAPIView):
