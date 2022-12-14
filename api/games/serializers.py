@@ -16,7 +16,7 @@ from spots.models import (
 )
 
 
-class GeoGuesserSpotSerializer(serializers.ModelSerializer):
+class SpotFinderSpotSerializer(serializers.ModelSerializer):
     type = serializers.SerializerMethodField()
     image = serializers.SerializerMethodField()
 
@@ -40,7 +40,7 @@ class GeoGuesserSpotSerializer(serializers.ModelSerializer):
         return self.context['request'].build_absolute_uri(chosen_image)
 
 
-class GeoGuesserResultSerializer(serializers.ModelSerializer):
+class SpotFinderResultSerializer(serializers.ModelSerializer):
     type = serializers.SerializerMethodField()
     image = serializers.SerializerMethodField()
     result = serializers.SerializerMethodField()
