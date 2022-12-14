@@ -86,3 +86,17 @@ export interface Image {
   spot: number
   image_url: string
 }
+
+export interface SpotFinderSpot {
+  id: number
+  name: string
+  description:string
+  type: string
+  image: string
+}
+export interface Result {
+  points: number
+  distance: number
+  real_coordinates: CoordinatesInterface
+  guess_coordinates: CoordinatesInterface
+}

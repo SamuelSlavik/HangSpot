@@ -1,0 +1,79 @@
+.games {
+  padding: 20%;
+}
+
+
+.spot-finder {
+  width: 100%;
+  display: flex;
+
+  &__tutorial {
+    color: $orange;
+    width: 100%;
+    text-align: center;
+  }
+  &__result {
+    text-align: center;
+    width: 100%;
+  }
+
+  &__map {
+    height: 100vh;
+    width: 50%;
+    margin: 0;
+    @media all and (max-width: $break-1){
+      width: 100%;
+      height: 90vh;
+    }
+  }
+  .spot-finder__map-inner {
+    width: 100%;
+    height: 100%;
+  }
+
+  &__content {
+    padding: 5% 5% 10% 5%;
+    width: 50%;
+    overflow: auto;
+    overflow-y: scroll;
+    height: 100vh;
+    @media all and (max-width: $break-1) {
+      width: 100%;
+    }
+
+    .submit {
+      width: 60%;
+      margin-bottom: 5%;
+      margin-left: 20%;
+      padding: 2% 1% 2% 1%;
+      text-align: center;
+      border-radius: 5px;
+      outline: none;
+      border: solid 2px $orange;
+      background-color: $orange;
+      color: $white;
+      @include transition-fast;
+      @media all and (max-width: $break-1){
+        width: 100%;
+        padding: 5%;
+        margin-top: 5%;
+      }
+
+      &:hover, &:active, &:focus {
+        border-color: $orange;
+        cursor: pointer;
+      }
+    }
+
+    .coordinate {
+      color: $light-gray;
+      font-size: 1.3em;
+      margin: 0;
+    }
+
+    img {
+      width: 50%;
+      height: auto;
+    }
+  }
+}

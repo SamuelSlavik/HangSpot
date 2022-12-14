@@ -351,8 +351,7 @@ function CreatePlace():JSX.Element {
             <input
               type={"submit"}
               className={"submit"}
-              id={"createName"}
-              placeholder={"Name"}
+              id={"createSubmit"}
               value={"Create Spot"}
             />
           </form>
