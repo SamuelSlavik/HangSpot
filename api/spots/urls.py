@@ -12,13 +12,15 @@ from .views import (
     DisplaySpotView,
     DisplaySpotImagesView,
     UploadSpotImagesView,
-    DestroySpotImagesView
+    UpdateSpotImagesView,
+    DestroySpotImagesView,
+    DestroySpotImageView
 )
 
 urlpatterns = [
     path('', SpotListView.as_view(), name='spots_list_all'),
     path('create/', spot_create_view, name='spots_create'),
-    path('get/<str:pk>/', SpotRetrieveUpdateView.as_view(), name='spots_retrieve_update'),
+    path('get/<str:pk>/', SpotRetrieveUpdateView.as_view(), name='spots_retrieve_update'), # update with patch
     path('destroy/<str:pk>/', SpotDestroyView.as_view(), name='spots_destroy'),
     path('filter/<str:spot_type>/', SpotFilterTypeListView.as_view(), name='spots_list_filtered_type'),
     path('user/<str:user_id>/', SpotFilterUserListView.as_view(), name='spots_list_filtered_user'),
@@ -28,5 +30,7 @@ urlpatterns = [
     path('displays/<str:pk>/', DisplaySpotView.as_view(), name='spots_display_give_get'),
     path('images/get/<str:pk>/', DisplaySpotImagesView.as_view(), name='spots_display_images'),
     path('images/upload/<str:pk>/', UploadSpotImagesView.as_view(), name='spots_upload_images'),
+    path('images/update/<str:pk>/', UpdateSpotImagesView.as_view(), name='spots_update_images'),
     path('images/destroy/<str:spot>/', DestroySpotImagesView.as_view(), name='spots_destroy_images'),
+    path('image/destroy/<str:pk>/', DestroySpotImageView.as_view(), name='spots_destroy_image'),
 ]
