@@ -45,7 +45,7 @@ function Spots():JSX.Element {
       {
         spotsData?
            spotsData.map(({name, description, id}) => (
-             <div className={"profile__spot"}>
+             <div key={id} className={"profile__spot"}>
                <div className={"spot-image"}>
                  <img src={imagePlaceholder}/>
                </div>

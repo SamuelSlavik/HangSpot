@@ -67,8 +67,8 @@ export interface User {
 }
 
 export interface CoordinatesInterface {
-  lat: number,
-  lng: number
+  lat: number | undefined,
+  lng: number | undefined
 }
 
 export interface Achievement {

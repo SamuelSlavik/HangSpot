@@ -19,7 +19,7 @@ import reloadContext from "../../context/reloadContext";
 
 function CreatePlace():JSX.Element {
   const [name, setName] = useState<string>()
-  const [coordinates, setCoordinates] = useState<CoordinatesInterface>({lat: 0, lng: 0})
+  const [coordinates, setCoordinates] = useState<CoordinatesInterface>({lat: undefined, lng: undefined})
   const [spot_type, setSpot_Type] = useState<string>()
   const [description, setDescription] = useState<string>()
   const [park_near, setPark_near] = useState<boolean>()
@@ -49,7 +49,7 @@ function CreatePlace():JSX.Element {
 
   const owner = useMemo(() => (userData.id), [userData])
 
-  const newMarker = useMemo(() => ({ lat: coordinates.lat , lng: coordinates.lng }), [coordinates]);
+  const newMarker = useMemo(() => ({ lat: (coordinates.lat ? coordinates.lat : 0) , lng: (coordinates.lng ? coordinates.lng : 0) }), [coordinates]);
 
   const [spot, setSpot] = useState<Spot>()
 
@@ -135,10 +135,10 @@ function CreatePlace():JSX.Element {
           }
         )
       }
-    } catch (e) {
+    } catch (e:any) {
       console.log(e)
+      alert("There was an error during creating new spot, please try it again")
     }
-    navigate("/")
   }
 
   return (
@@ -166,7 +166,7 @@ function CreatePlace():JSX.Element {
           <p>Latitude: {coordinates.lat ? coordinates.lat : ""}</p>
           <p>Longitude: {coordinates.lng ? coordinates.lng : ""}</p>
           <br/>
-          <form onSubmit={submit}>
+          <form onSubmit={(e) => {submit(e).catch(console.error); navigate("/")}}>
             <input
               type={"text"}
               className={"input"}
