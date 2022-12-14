@@ -222,7 +222,7 @@ class UpdateSpotImagesView(generics.CreateAPIView):
             spot = SpotCommon.objects.get(pk=spot_id)
         except SpotCommon.DoesNotExist:
             raise NotFound(detail='Spot not found')
-        images = request.FILES.getlist('images')
+        images = request.FILES.getlist('images[]')
         allowed_ext = ['png', 'jpg', 'jpeg', 'webp']
         for image in images:
             ext = image.name.split('.')[-1]
