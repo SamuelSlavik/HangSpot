@@ -62,49 +62,9 @@
     }
   }
 }
-.sidepanel__overlay {
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  top: 0;
-  left: 0;
-  visibility: hidden;
-  opacity: 0;
-  transition: all 0.3s linear;
-  -webkit-transition: all 0.3s linear;
-  -moz-transition: all 0.3s linear;
-  -o-transition: all 0.3s linear;
-  -ms-transition: all 0.3s linear;
-  z-index: -1;
-  background: rgba(0, 0, 0, 0.4);
-
-  &:hover {
-    cursor: pointer;
-  }
-}
 .sidepanel__off {
   color: $orange !important;
   position: absolute;
   bottom: 5%;
   right: 5%;
-}
-.sidepanel__off:hover {
-  color: $white;
-  cursor: pointer;
-}
-.sidepanel-content {
-  width: 100%;
-  padding: 5%;
-}
-.sidepanel__top {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10%;
-}
-.sidepanel__top img {
-  height: auto;
-  width: 50%;
-}
-.sidepanel-content a:hover {
-  color: $white !important;
 }
