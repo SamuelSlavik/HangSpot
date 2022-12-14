@@ -10,6 +10,7 @@ from .serializers import (
     GeoGuesserSpotSerializer,
     GeoGuesserResultSerializer
 )
+from userauth.models import User
 
 
 def _get_game_serializer_class(name):
@@ -80,7 +81,7 @@ def _get_geoguesser_result(request, serializer_class):
     distance = np.divide(r * c, 1000)
 
     result = 5000 * np.power(np.e, np.divide(distance, -2000))
-    context = {'points': int(result), 'distance': np.round(distance, 3), 'image_url': image_url}
+    context = {'points': int(np.round(result)), 'distance': np.round(distance, 3), 'image_url': image_url}
     serializer = serializer_class(spot, context=context)
 
     return serializer
@@ -92,4 +93,17 @@ def get_game_result_view(request, *args, **kwargs):
     serializer_class = _get_game_result_serializer_class(game_name)
     serializer = _get_geoguesser_result(request, serializer_class)
 
+    if request.user.is_authenticated:
+        _update_geoguesser_stats(serializer.data.get('result'), request.user.id)
+
     return Response(serializer.data, status=200)
+
+
+def _update_geoguesser_stats(result, user_id):
+    user = User.objects.get(pk=user_id)
+    points = result['points']
+    user.geo_total += points
+    if points > user.geo_record:
+        user.geo_record = points
+    user.save()
+

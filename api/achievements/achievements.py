@@ -15,6 +15,7 @@ def get_achievements(user_id):
     achievements += _get_likes_achievements(user)
     achievements += _get_displays_achievements(user)
     achievements += _get_created_achievements(user)
+    achievements += _get_geoguesser_achievements(user)
     achieved = _parse_achievements(achievements)
     return achieved
 
@@ -105,4 +106,20 @@ def _get_created_achievements(user):
 def _get_user_spots(user):
     spots_qs = SpotCommon.objects.filter(owner=user)
     return spots_qs
+
+
+def _get_geoguesser_achievements(user):
+    achievements = [
+        {
+            'description': 'Total SpotFinder points',
+            'comparator': user.geo_total,
+            'tiers': [10_000, 20_000, 50_000]
+        },
+        {
+            'description': 'Most SpotFinder round points',
+            'comparator': user.geo_record,
+            'tiers': [1500, 3000, 5000]
+        },
+    ]
+    return achievements
 
