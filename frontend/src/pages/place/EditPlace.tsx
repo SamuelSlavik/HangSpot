@@ -100,7 +100,7 @@ function EditPlace():JSX.Element {
 
   const owner = useMemo(() => (userData.id), [userData])
 
-  const newMarker = useMemo(() => ({ lat: coordinates.lat , lng: coordinates.lng }), [coordinates]);
+  const newMarker = useMemo(() => ({ lat: (coordinates.lat ? coordinates.lat : 0) , lng: (coordinates.lng ? coordinates.lng : 0) }), [coordinates]);
 
   const {isLoaded} = useLoadScript({
     googleMapsApiKey: "AIzaSyA71RHhLabJaCTd4oYQwZGAcF2Luxcnf5s",
@@ -387,7 +387,7 @@ function EditPlace():JSX.Element {
                 !imagesData ?
                   <></>  :
                   imagesData.map(({id, image_url}) => (
-                    <div className={"images--small"}>
+                    <div key={id} className={"images--small"}>
                       <a onClick={() => deleteImage(id)} className={"image-delete"}><SvgIcon component={DeleteIcon} fontSize={"large"}/></a>
                       <img className={""} id={"image" + id} alt={"Image"} src={image_url}/>
                     </div>

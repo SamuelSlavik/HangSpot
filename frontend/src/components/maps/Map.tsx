@@ -14,7 +14,7 @@ function Map() {
   const [spots, setSpots] = useState<Spot[]>([])
   //Global context
   const {searchType} = useContext(SearchContext)
-  const {forceReload} = useContext(ReloadContext)
+  const {forceReload, setForceReload} = useContext(ReloadContext)
 
   const navigate = useNavigate();
 
@@ -32,6 +32,10 @@ function Map() {
       }
     ]
   }), []);
+
+  setTimeout(() => {
+    setForceReload(forceReload + 1)
+  }, 5000)
 
   useEffect(() => {
     console.log(searchType)

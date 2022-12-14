@@ -183,14 +183,14 @@ function PlaceDetail():JSX.Element {
                   <></> :
                   <>
                     <p style={{marginBottom: 0}}>Guard free from:</p>
-                    <p style={{marginTop: 0}} className={"text--large"}>Guarded</p>
+                    <p style={{marginTop: 0}} className={"text--large"}>{spot.guard_free_from}</p>
                   </>
               }
               {
                 !spot?.guard_free_till ?
                   <></> :
                   <>
-                    <p style={{marginBottom: 0}}>Guard free from:</p>
+                    <p style={{marginBottom: 0}}>Guard free till:</p>
                     <p style={{marginTop: 0}} className={"text--large"}>{spot.guard_free_till}</p>
                   </>
               }
@@ -219,7 +219,7 @@ function PlaceDetail():JSX.Element {
                   </>
               }
               {
-                !spot?.close_time ?
+                !spot?.path_description ?
                   <></> :
                   <>
                     <p style={{marginBottom: 0}}>Path description:</p>
@@ -233,7 +233,7 @@ function PlaceDetail():JSX.Element {
                   <div className={"spot__images"}>
                     {
                       imagesData.map(({id, image_url}) => (
-                        <div className={"image-wrapper"}>
+                        <div key={id} className={"image-wrapper"}>
                           <img id={"image" + id} alt={"Image"} src={image_url}/>
                         </div>
                       ))
