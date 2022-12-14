@@ -27,4 +27,5 @@ urlpatterns = [
     path('api/spots/', include('spots.urls')),
     path('api/achievements/', include('achievements.urls')),
     path('api/games/', include('games.urls')),
+    path('api/image/', include('images.urls')),
 ]
