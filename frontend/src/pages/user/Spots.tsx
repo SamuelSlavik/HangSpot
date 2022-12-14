@@ -16,8 +16,6 @@ import {SvgIcon} from "@mui/material";
 import UserContext from "../../context/userContext";
 // components
 import ProfileLikes from "./ProfileLikes";
-// images
-import imagePlaceholder from "../../assets/images/land.png"
 import SpotThumbnail from "./SpotThumbnail";
 
 function Spots():JSX.Element {
@@ -27,7 +25,8 @@ function Spots():JSX.Element {
 
   const fetchSpots = async () => {
     const res = await axios.get<Spot[]>("http://localhost:8000/api/spots/user/" + userData.id + "/",
-      { headers: { "Authorization": "Bearer " + userData.token } },)
+
+      {headers: { "Authorization": "Bearer " + userData.token } },)
     setSpotsData(res.data)
   }
 
