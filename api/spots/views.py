@@ -197,7 +197,7 @@ class UploadSpotImagesView(generics.CreateAPIView):
         qs = self.get_queryset().filter(spot__id=spot_id)
         if qs.exists():
             qs.delete()
-        images = request.FILES.getlist('files')
+        images = request.FILES.getlist('images')
         allowed_ext = ['png', 'jpg', 'jpeg', 'webp']
         for image in images:
             ext = image.name.split('.')[-1]
@@ -207,7 +207,7 @@ class UploadSpotImagesView(generics.CreateAPIView):
             SpotImage.objects.create(spot=spot, image=image)
         qs = self.get_queryset().filter(spot__id=spot_id)
         serializer_class = self.get_serializer_class()
-        serializer = serializer_class(qs, many=True)
+        serializer = serializer_class(qs, many=True, context={'request': request})
         return Response(serializer.data, status=201)
 
 

@@ -40,7 +40,7 @@ class SpotCommon(models.Model):
 
 class SpotImage(models.Model):
     spot = models.ForeignKey(to=SpotCommon, on_delete=models.CASCADE, related_name='images')
-    image = models.ImageField(upload_to='spot_images/')
+    image = models.ImageField(upload_to='media/spot_images/')
 
 
 class SkateSpotType(models.Model):
