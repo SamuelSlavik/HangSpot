@@ -2,13 +2,8 @@
 
 // Mixins
 @import "assets/style/mixins/transitions-mixin";
-@import "assets/style/mixins/list-mixin";
 // Default style
 @import "assets/style/default";
-
-// Components
-@import "assets/style/components/buttons";
-@import "assets/style/components/loading";
 
 // Layout
 @import "assets/style/layout/navigation";
