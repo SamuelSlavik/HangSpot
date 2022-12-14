@@ -1,18 +1,24 @@
+/*
+* author: Samuel Slávik (xslavi37)
+* brief: Getting and displaying all spots of given user
+*/
+
 import React, {useContext, useEffect, useState} from "react"
 import axios from "axios";
-import {Achievement, Spot} from "../../types/interfaces";
-
 import {Link} from "react-router-dom"
-
-import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
+// modules and structures
+import {Spot} from "../../types/interfaces";
+// icons
 import DeleteIcon from '@mui/icons-material/Delete';
 import CreateIcon from '@mui/icons-material/Create';
 import {SvgIcon} from "@mui/material";
-
+// global context
 import UserContext from "../../context/userContext";
+// components
 import ProfileLikes from "./ProfileLikes";
-
+// images
 import imagePlaceholder from "../../assets/images/land.png"
+import SpotThumbnail from "./SpotThumbnail";
 
 function Spots():JSX.Element {
   const [spotsData, setSpotsData] = useState<Spot[]>()
@@ -47,7 +53,7 @@ function Spots():JSX.Element {
            spotsData.map(({name, description, id}) => (
              <div key={id} className={"profile__spot"}>
                <div className={"spot-image"}>
-                 <img src={imagePlaceholder}/>
+                 <SpotThumbnail id={id} />
                </div>
                <div className={"spot-content"}>
                  <h2><Link to={"/detail/" + id}>{name}</Link></h2>
@@ -63,6 +69,7 @@ function Spots():JSX.Element {
            )) :
           <div>Loading your spots</div>
       }
+      <>{console.log(spotsData)}</>
     </div>
   )
 }

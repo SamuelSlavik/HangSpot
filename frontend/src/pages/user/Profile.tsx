@@ -1,3 +1,8 @@
+/*
+* author: Samuel Slávik (xslavi37)
+* brief: User profile, home for all components with user information. Also displaying basic profile information
+*/
+
 import React from "react";
 import {useEffect, useState, useContext} from "react";
 import axios from "axios";
@@ -11,7 +16,6 @@ import Achievements from "./Achievements";
 import Spots from "./Spots";
 // Images
 import profilePhoto from "../../assets/images/profile-photo.jpeg"
-
 
 function Profile():JSX.Element {
   // State

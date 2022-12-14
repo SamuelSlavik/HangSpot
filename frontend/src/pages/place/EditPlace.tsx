@@ -1,23 +1,53 @@
+/*
+* author: Adam Pekný (xpekny00)
+* brief: Generate user interface for editing already existing spots
+*/
+
 import React, {useContext, useEffect, useMemo, useState} from "react"
 import axios from "axios";
-import {useParams, Link, useNavigate} from "react-router-dom"
-
+import {useParams, useNavigate} from "react-router-dom"
+import TimeInput from "react-input-time";
+// structures and modules
 import {CoordinatesInterface, Image, Like, Spot, SpotDetail, Type} from "../../types/interfaces"
 import {GoogleMap, Marker, useLoadScript} from "@react-google-maps/api";
-
-import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
+// icons
 import {SvgIcon} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
+// global context
 import UserContext from "../../context/userContext";
-import mapContext from "../../context/mapContext";
 import ReloadContext from "../../context/reloadContext";
-import TimeInput from "react-input-time";
 
 function EditPlace():JSX.Element {
+  // state
   const [spot, setSpot] = useState<Spot>()
   const [imagesData, setImagesData] = useState<Image[]>()
 
+  const [name, setName] = useState<string>()
+  const [coordinates, setCoordinates] = useState<CoordinatesInterface>({lat: 0, lng: 0})
+  const [spot_type, setSpot_Type] = useState<string>()
+  const [description, setDescription] = useState<string>()
+  const [park_near, setPark_near] = useState<boolean>()
+  const [parking_description, setParking_description] = useState<string>()
+  const [seating_provided, setSeating_provided] = useState<boolean>()
+  const [images, setImages] = useState<any>({})
+  const [guarded, setGuarded] = useState<boolean>()
+  const [guard_free_from, setGuard_free_from] = useState<string>("0:00")
+  const [guard_free_till, setGuard_free_till] = useState<string>("0:00")
+  const [open_time, setOpen_time] = useState<string>("0:00")
+  const [close_time, setClose_time] = useState<string>("0:00")
+  const [expected_duration, setExpected_duration] = useState<number>()
+  const [path_description, setPath_description] = useState<string>()
+  // global context
   const {userData} = useContext(UserContext)
+  const {forceReload, setForceReload} = useContext(ReloadContext)
+
+  const latitude = useMemo(() => (coordinates.lat), [coordinates])
+  const longitude = useMemo(() => (coordinates.lng), [coordinates])
+  const owner = useMemo(() => (userData.id), [userData])
+  const newMarker = useMemo(() => ({ lat: (coordinates.lat ? coordinates.lat : 0) , lng: (coordinates.lng ? coordinates.lng : 0) }), [coordinates]);
+
+  const navigate = useNavigate();
+  const { id } = useParams()
 
   const fetchImages = async () => {
     try {
@@ -40,7 +70,6 @@ function EditPlace():JSX.Element {
     }
     fetchImages().catch(console.error)
   }
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -67,58 +96,7 @@ function EditPlace():JSX.Element {
     }
     fetchData().catch(console.error)
     fetchImages().catch(console.error)
-
   }, [userData])
-
-  const { id } = useParams()
-
-  const [name, setName] = useState<string>()
-  const [coordinates, setCoordinates] = useState<CoordinatesInterface>({lat: 0, lng: 0})
-  const [spot_type, setSpot_Type] = useState<string>()
-  const [description, setDescription] = useState<string>()
-  const [park_near, setPark_near] = useState<boolean>()
-  const [parking_description, setParking_description] = useState<string>()
-  const [seating_provided, setSeating_provided] = useState<boolean>()
-  const [images, setImages] = useState<any>({})
-  const [guarded, setGuarded] = useState<boolean>()
-  const [guard_free_from, setGuard_free_from] = useState<string>("0:00")
-  const [guard_free_till, setGuard_free_till] = useState<string>("0:00")
-  const [open_time, setOpen_time] = useState<string>("0:00")
-  const [close_time, setClose_time] = useState<string>("0:00")
-  const [expected_duration, setExpected_duration] = useState<number>()
-  const [path_description, setPath_description] = useState<string>()
-
-  const {forceReload, setForceReload} = useContext(ReloadContext)
-
-  const navigate = useNavigate();
-
-  const [allTypes, setAllTypes] = useState<Type[]>([])
-
-  const latitude = useMemo(() => (coordinates.lat), [coordinates])
-  const longitude = useMemo(() => (coordinates.lng), [coordinates])
-
-
-  const owner = useMemo(() => (userData.id), [userData])
-
-  const newMarker = useMemo(() => ({ lat: (coordinates.lat ? coordinates.lat : 0) , lng: (coordinates.lng ? coordinates.lng : 0) }), [coordinates]);
-
-  const {isLoaded} = useLoadScript({
-    googleMapsApiKey: "AIzaSyA71RHhLabJaCTd4oYQwZGAcF2Luxcnf5s",
-  });
-
-  const styles = useMemo(() => ({
-    styles: [
-      {
-        featureType: "poi.business",
-        stylers: [{visibility: "off"}]
-      },
-      {
-        featureType: "transit",
-        elementType: "labels.icon",
-        stylers: [{visibility: "off"}]
-      }
-    ]
-  }), []);
 
   const submit = async (e: any) => {
     e.preventDefault()
@@ -181,6 +159,24 @@ function EditPlace():JSX.Element {
     }
     navigate("/")
   }
+
+  // google maps api
+  const {isLoaded} = useLoadScript({
+    googleMapsApiKey: "AIzaSyA71RHhLabJaCTd4oYQwZGAcF2Luxcnf5s",
+  });
+  const styles = useMemo(() => ({
+    styles: [
+      {
+        featureType: "poi.business",
+        stylers: [{visibility: "off"}]
+      },
+      {
+        featureType: "transit",
+        elementType: "labels.icon",
+        stylers: [{visibility: "off"}]
+      }
+    ]
+  }), []);
 
   return (
     <>

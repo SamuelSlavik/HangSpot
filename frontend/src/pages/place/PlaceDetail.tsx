@@ -1,41 +1,31 @@
+/*
+* author: Adam Pekný (xpekny00)
+* brief: Displaying detail of existing place
+*/
+
 import React, {useContext, useEffect, useMemo, useState} from "react"
 import axios from "axios";
-import {useParams, Link} from "react-router-dom"
-
-import {Like, Spot, SpotDetail, Image} from "../../types/interfaces"
+import {useParams} from "react-router-dom"
+// modules and structures
+import {Like, SpotDetail, Image} from "../../types/interfaces"
+// google maps api
 import {GoogleMap, Marker, useLoadScript} from "@react-google-maps/api";
-
+// material icons
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import {SvgIcon} from "@mui/material";
+// global context
 import UserContext from "../../context/userContext";
-import mapContext from "../../context/mapContext";
 
 function PlaceDetail():JSX.Element {
-  const { isLoaded } = useLoadScript({
-    googleMapsApiKey: "AIzaSyA71RHhLabJaCTd4oYQwZGAcF2Luxcnf5s",
-  });
-
-  const { id } = useParams()
+  // state
   const [coordinates, setCoordinates] = useState({ lat: 49.19578860752985, lng: 16.606112965870675 })
   const [spot, setSpot] = useState<SpotDetail>()
   const [likes, setLikes] = useState<Like>()
   const [imagesData, setImagesData] = useState<Image[]>()
-
+  // global context
   const { userData, setUserData } = useContext(UserContext);
 
-  const styles = useMemo(() => ({
-    styles: [
-      {
-        featureType: "poi.business",
-        stylers: [{visibility: "off"}]
-      },
-      {
-        featureType: "transit",
-        elementType: "labels.icon",
-        stylers: [{visibility: "off"}]
-      }
-    ]
-  }), []);
+  const { id } = useParams()
 
   const fetchLikes = async () => {
     try {
@@ -55,7 +45,6 @@ function PlaceDetail():JSX.Element {
       console.log(e)
     }
   }
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -83,6 +72,23 @@ function PlaceDetail():JSX.Element {
     fetchLikes().catch(console.error)
   }
 
+  // google maps api
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: "AIzaSyA71RHhLabJaCTd4oYQwZGAcF2Luxcnf5s",
+  });
+  const styles = useMemo(() => ({
+    styles: [
+      {
+        featureType: "poi.business",
+        stylers: [{visibility: "off"}]
+      },
+      {
+        featureType: "transit",
+        elementType: "labels.icon",
+        stylers: [{visibility: "off"}]
+      }
+    ]
+  }), []);
   const displayIcon = (color:string)=>{
     let icon =  "https://maps.google.com/mapfiles/ms/icons/" + color + "-dot.png"
     return icon
@@ -137,7 +143,7 @@ function PlaceDetail():JSX.Element {
               <div className={"spot__display-flex"}>
                 <div>
                   <p style={{marginBottom: 0}}>Created by:</p>
-                  <Link to={"/user/" + spot?.owner.id} style={{marginTop: 0}} className={"text--large"}><b>{spot?.owner.username}</b></Link>
+                  <p style={{marginTop: 0}} className={"text--large"}><b>{spot?.owner.username}</b></p>
                 </div>
                 {
                   !likes?.likes === undefined ?

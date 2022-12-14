@@ -1,3 +1,8 @@
+/*
+Author: Samuel Slávik (xslavi37), Jakub Kontrík (xkontr02), Adam Pekný(xpekny00)
+Brief: File with all structures that are used in the project
+*/
+
 export interface Spot {
   id: number,
   name: string,

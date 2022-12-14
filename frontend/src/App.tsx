@@ -1,3 +1,8 @@
+/*
+* author: Samuel Slávik (xslavi37)
+* brief: File that provides routes for pages and components, global variables. The whole app loads in this file
+*/
+
 import React, {useState, useEffect} from 'react';
 import {Route, Routes} from "react-router";
 import axios from "axios";

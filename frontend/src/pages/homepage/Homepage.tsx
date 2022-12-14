@@ -1,19 +1,24 @@
-import React, {useContext, useEffect} from 'react';
+/*
+* author: Samuel Slávik (xslavi37)
+* brief: homepage
+*/
+
+import React, {useContext} from 'react';
 import {Link} from "react-router-dom";
-
+// functions
 import {toggleSidePanelOn} from "../../functions/toggleSidePanel";
-
 // ICONS //
 import TuneOutlinedIcon from '@mui/icons-material/TuneOutlined';
 import SportsEsportsOutlinedIcon from '@mui/icons-material/SportsEsportsOutlined';
 import {SvgIcon} from "@mui/material";
-
-//components
+// components
 import SidePanel from "../../components/SidePanel";
 import Map from "../../components/maps/Map";
+// global context
 import mapContext from "../../context/mapContext";
 
 function Homepage():JSX.Element {
+  // global context
   const {isLoaded} = useContext(mapContext)
 
   return (
@@ -28,7 +33,7 @@ function Homepage():JSX.Element {
         </a>
       </div>
       <div id={""} className={"games-link"}>
-        <Link to={"/games"}>
+        <Link to={"/games/spot-finder"}>
           <SvgIcon component={SportsEsportsOutlinedIcon} fontSize={"large"}/>
         </Link>
       </div>

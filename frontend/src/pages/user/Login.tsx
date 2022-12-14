@@ -1,18 +1,24 @@
-import React from "react";
-import {useEffect, useState, useContext} from "react";
-import UserContext from "../../context/userContext";
-import Axios from "axios";
+/*
+* author: Samuel Slávik (xslavi37)
+* brief: Form and logic for logging user
+*/
 
+import React from "react";
+import {useState, useContext} from "react";
+import Axios from "axios";
 import {useNavigate} from "react-router-dom"
+// global context
+import UserContext from "../../context/userContext";
 
 function Login(): JSX.Element {
-  const navigate = useNavigate()
+  //state
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
   const [error, setError] = useState<any>();
+  // global context
+  const { setUserData } = useContext(UserContext);
 
-  const { userData, setUserData } = useContext(UserContext);
-
+  const navigate = useNavigate()
 
   const submit = async (e:any) => {
     e.preventDefault();

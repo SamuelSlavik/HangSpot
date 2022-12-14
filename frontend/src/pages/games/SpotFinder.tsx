@@ -1,34 +1,34 @@
+/*
+* author: Jakub Kontrík (xkontr02)
+* brief: Game Spot finder
+*/
+
 import React, {useContext, useEffect, useMemo, useState} from "react"
-import {GoogleMap, Marker, useLoadScript, Polyline} from "@react-google-maps/api";
 import axios from "axios";
-import {CoordinatesInterface, Image, Like, Result, SpotDetail, SpotFinderSpot} from "../../types/interfaces";
+// Modules and structures
+import {CoordinatesInterface, Result, SpotFinderSpot} from "../../types/interfaces";
+// Global context
 import UserContext from "../../context/userContext";
 import MapContext from "../../context/mapContext";
-import {useParams} from "react-router-dom"
+// google maps api
+import {GoogleMap, Marker, Polyline} from "@react-google-maps/api";
 
 function SpotFinder():JSX.Element {
-  const { isLoaded } = useContext(MapContext)
-
-  const { id } = useParams()
+  // State
   const [coordinates, setCoordinates] = useState<CoordinatesInterface>({lat: undefined, lng: undefined})
-
   const [resultCoordinates, setResultCoordinates] = useState<CoordinatesInterface>({lat: undefined, lng: undefined})
-
   const [spot, setSpot] = useState<SpotFinderSpot>()
-  const [likes, setLikes] = useState<Like>()
-  const [imagesData, setImagesData] = useState<Image[]>()
+  const [result, setResult] = useState<Result|undefined>(undefined)
+  const [spot_id, setSpot_id] = useState<number>()
+  // global context
+  const { isLoaded } = useContext(MapContext)
+  const { userData } = useContext(UserContext);
 
   const latitude = useMemo(() => (coordinates.lat), [coordinates])
   const longitude = useMemo(() => (coordinates.lng), [coordinates])
 
-  const [result, setResult] = useState<Result|undefined>(undefined)
-
-  const { userData, setUserData } = useContext(UserContext);
-
   const newMarker = useMemo(() => ({ lat: (coordinates.lat ? coordinates.lat : 0) , lng: (coordinates.lng ? coordinates.lng : 0) }), [coordinates]);
   const resultMarker = useMemo(() => ({ lat: (resultCoordinates.lat ? resultCoordinates.lat : 0) , lng: (resultCoordinates.lng ? resultCoordinates.lng : 0) }), [resultCoordinates]);
-
-  const[spot_id, setSpot_id] = useState<number>()
 
   const fetchData = async () => {
     try {
@@ -60,6 +60,7 @@ function SpotFinder():JSX.Element {
     }
   }
 
+  // fetch next question and reset the states
   const nextQuestion = async (e:any) => {
     e.preventDefault()
     setResult(undefined)
@@ -68,6 +69,7 @@ function SpotFinder():JSX.Element {
     fetchData().catch(console.error)
   }
 
+  // google maps styles
   const styles = useMemo(() => ({
     styles: [
       {
@@ -81,11 +83,6 @@ function SpotFinder():JSX.Element {
       }
     ]
   }), []);
-  const displayIcon = (color:string)=>{
-    let icon =  "https://maps.google.com/mapfiles/ms/icons/" + color + "-dot.png"
-    return icon
-  }
-
 
   return (
     <div className={"spot-finder"}>
@@ -116,7 +113,7 @@ function SpotFinder():JSX.Element {
       <div className={"spot-finder__content"}>
         <p className={"text--large spot-finder__tutorial"}>
           <b>
-          Guess where the location of the spot below.<br/>
+          Guess the location of the spot below.<br/>
           Confirm your guess via submit button.
           </b>
         </p>

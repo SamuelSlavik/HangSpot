@@ -1,11 +1,11 @@
+/*
+Author: Samuel Slávik (xslavi37)
+Brief: Renders the whole react application into root div in index.html
+*/
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {BrowserRouter as Router} from "react-router-dom";
-
-//import ThemeContext from "./themeContext";
-//import theme from "./themeContext"
-
-// some change
 
 import App from './App';
 
