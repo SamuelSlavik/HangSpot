@@ -17,6 +17,7 @@ import GamesMenu from "./pages/games/GamesMenu";
 import PlaceDetail from "./pages/place/PlaceDetail";
 import CreatePlace from "./pages/place/CreatePlace";
 import {useLoadScript} from "@react-google-maps/api";
+import EditPlace from "./pages/place/EditPlace";
 
 function App() {
   // User context
@@ -91,6 +92,10 @@ function App() {
                 <Route
                   path={"/create/"}
                   element={<CreatePlace/>}
+                />
+                <Route
+                  path={"/edit/:id"}
+                  element={<EditPlace/>}
                 />
               </Routes>
             </ReloadContext.Provider>

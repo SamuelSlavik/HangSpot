@@ -12,7 +12,7 @@ import {SvgIcon} from "@mui/material";
 import UserContext from "../../context/userContext";
 import ProfileLikes from "./ProfileLikes";
 
-import profilePhoto from "../../assets/images/profile-photo.jpeg"
+import imagePlaceholder from "../../assets/images/land.png"
 
 function Spots():JSX.Element {
   const [spotsData, setSpotsData] = useState<Spot[]>()
@@ -46,7 +46,7 @@ function Spots():JSX.Element {
            spotsData.map(({name, description, id}) => (
              <div className={"profile__spot"}>
                <div className={"spot-image"}>
-                 <img src={profilePhoto}/>
+                 <img src={imagePlaceholder}/>
                </div>
                <div className={"spot-content"}>
                  <h2><Link to={"/detail/" + id}>{name}</Link></h2>
@@ -55,7 +55,7 @@ function Spots():JSX.Element {
                  <ProfileLikes id={id}/>
                </div>
                <div className={"spot-actions"}>
-                 <p><a><SvgIcon component={CreateIcon}/></a></p>
+                 <p><Link to={"/edit/" + id}><SvgIcon component={CreateIcon}/></Link></p>
                  <p><a onClick={() => deleteSpot(id)}><SvgIcon component={DeleteIcon}/></a></p>
                  <p>3</p>
                </div>

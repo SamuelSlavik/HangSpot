@@ -2,22 +2,47 @@ import React, {useContext, useEffect, useMemo, useState} from "react"
 import axios from "axios";
 import {useParams, Link, useNavigate} from "react-router-dom"
 
-import TimeInput from 'react-input-time';
-
-import UserContext from "../../context/userContext";
-import ReloadContext from "../../context/reloadContext";
-
-
-
-import {CoordinatesInterface, Spot, Type} from "../../types/interfaces"
+import {CoordinatesInterface, Like, Spot, SpotForTheFuckinDetail, Type} from "../../types/interfaces"
 import {GoogleMap, Marker, useLoadScript} from "@react-google-maps/api";
-import Login from "../user/Login";
+
+import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
+import {SvgIcon} from "@mui/material";
+import UserContext from "../../context/userContext";
 import mapContext from "../../context/mapContext";
-import reloadContext from "../../context/reloadContext";
+import ReloadContext from "../../context/reloadContext";
+import TimeInput from "react-input-time";
 
-// FUnction begining
+function EditPlace():JSX.Element {
+  const [spot, setSpot] = useState<Spot>()
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get<SpotForTheFuckinDetail>("http://localhost:8000/api/spots/get/" + id)
+        setSpot(response.data)
+        setCoordinates({lat: response.data.latitude, lng: response.data.longitude})
+        setName(response.data.name)
+        setSpot_Type(response.data.spot_type.type_name)
+        setDescription(response.data.description)
+        setPark_near(response.data.park_near)
+        setParking_description(response.data.park_description)
+        setSeating_provided(response.data.seating_provided)
+        setGuarded(response.data.guarded)
+        setGuard_free_from(response.data.guard_free_from ? response.data.guard_free_from : "")
+        setGuard_free_till(response.data.guard_free_till ? response.data.guard_free_till : "")
+        setOpen_time(response.data.open_time ? response.data.open_time : "")
+        setClose_time(response.data.close_time ? response.data.close_time : "")
+        setExpected_duration(response.data.expected_duration)
+        setDescription(response.data.path_description)
+      } catch (e) {
+        console.log(e)
+      }
+    }
+    fetchData().catch(console.error)
 
-function CreatePlace():JSX.Element {
+  }, [])
+
+  const { id } = useParams()
+
   const [name, setName] = useState<string>()
   const [coordinates, setCoordinates] = useState<CoordinatesInterface>({lat: 0, lng: 0})
   const [spot_type, setSpot_Type] = useState<string>()
@@ -34,8 +59,6 @@ function CreatePlace():JSX.Element {
   const [expected_duration, setExpected_duration] = useState<number>()
   const [path_description, setPath_description] = useState<string>()
 
-  const {isLoaded} = useContext(mapContext)
-
   const {forceReload, setForceReload} = useContext(ReloadContext)
 
   const navigate = useNavigate();
@@ -51,19 +74,9 @@ function CreatePlace():JSX.Element {
 
   const newMarker = useMemo(() => ({ lat: coordinates.lat , lng: coordinates.lng }), [coordinates]);
 
-  const [spot, setSpot] = useState<Spot>()
-
-  useEffect(() => {
-    const fetchTypes = async () => {
-      try {
-        const response = await axios.get("http://localhost:8000/api/spots/types/")
-        setAllTypes(response.data)
-      } catch (e) {
-        console.log(e)
-      }
-    }
-    fetchTypes().catch(console.error)
-  }, [])
+  const {isLoaded} = useLoadScript({
+    googleMapsApiKey: "AIzaSyA71RHhLabJaCTd4oYQwZGAcF2Luxcnf5s",
+  });
 
   const styles = useMemo(() => ({
     styles: [
@@ -87,13 +100,13 @@ function CreatePlace():JSX.Element {
     };
     try {
       if (spot_type === "picnic" || "sunset") {
-        const createRes:any = await axios.post(
-          "http://localhost:8000/api/spots/create/",
+        const createRes:any = await axios.patch(
+          "http://localhost:8000/api/spots/get/" + id + "/",
           {name, spot_type, owner, latitude, longitude, description, park_near, parking_description, seating_provided},
           {headers: headers}
         )
         setForceReload(forceReload + 1)
-        const imagesRes:any = await axios.post(
+        /*const imagesRes:any = await axios.post(
           "http://localhost:8000/api/spots/images/upload/" + createRes.data.id + "/",
           {images},
           { headers: {
@@ -101,15 +114,15 @@ function CreatePlace():JSX.Element {
               "Content-Type": "multipart/form-data",
             }
           }
-        )
+        )*/
       } else if (spot_type === "bmx" || "skateboard") {
-        const createRes:any = await axios.post(
-          "http://localhost:8000/api/spots/create/",
+        const createRes:any = await axios.patch(
+          "http://localhost:8000/api/spots/get/" + id + "/",
           {name, spot_type, owner, latitude, longitude, description, park_near, parking_description, guarded, guard_free_from, guard_free_till, open_time, close_time, expected_duration, path_description},
           {headers: headers}
         )
         setForceReload(forceReload + 1)
-        const imagesRes:any = await axios.post(
+        /*const imagesRes:any = await axios.post(
           "http://localhost:8000/api/spots/images/upload/" + createRes.data.id + "/",
           {images},
           { headers: {
@@ -117,15 +130,15 @@ function CreatePlace():JSX.Element {
               "Content-Type": "multipart/form-data",
             }
           }
-        )
+        )*/
       } else {
-        const createRes:any = await axios.post(
-          "http://localhost:8000/api/spots/create/",
+        const createRes:any = await axios.patch(
+          "http://localhost:8000/api/spots/get/" + id + "/",
           {name, spot_type, owner, latitude, longitude, description, park_near, parking_description, expected_duration, path_description},
           {headers: headers}
         )
         setForceReload(forceReload + 1)
-        const imagesRes:any = await axios.post(
+        /*const imagesRes:any = await axios.post(
           "http://localhost:8000/api/spots/images/upload/" + createRes.data.id + "/",
           {images},
           { headers: {
@@ -133,7 +146,7 @@ function CreatePlace():JSX.Element {
               "Content-Type": "multipart/form-data",
             }
           }
-        )
+        )*/
       }
     } catch (e) {
       console.log(e)
@@ -172,7 +185,7 @@ function CreatePlace():JSX.Element {
               type={"text"}
               className={"input"}
               id={"createName"}
-              placeholder={"Name"}
+              placeholder={spot?.name}
               value={name}
               required
               onChange={(e) => {setName(e.target.value)}}
@@ -182,16 +195,9 @@ function CreatePlace():JSX.Element {
               required
               onChange={(e) => {setSpot_Type(e.target.value)}}
             >
-              <option value={''}>
-                Select category
+              <option value={spot?.spot_type.type_name}>
+                {spot?.spot_type.display_name}
               </option>
-              {
-                allTypes.map(({type_name, display_name}) => (
-                  <option value={type_name}>
-                    {display_name}
-                  </option>
-                ))
-              }
             </select>
             <textarea
               name={"description"}
@@ -260,10 +266,10 @@ function CreatePlace():JSX.Element {
                     className={"input input-checkbox"}
                     checked={guarded}
                     onChange={event => {setGuarded(event.target.checked);
-                    if(guarded) {
-                      setGuard_free_from("")
-                      setGuard_free_till("")
-                    }}}
+                      if(guarded) {
+                        setGuard_free_from("")
+                        setGuard_free_till("")
+                      }}}
                   />
                   <label htmlFor={"createGuarded"}>Guarded ?</label>
                 </div> :
@@ -353,15 +359,14 @@ function CreatePlace():JSX.Element {
               className={"submit"}
               id={"createName"}
               placeholder={"Name"}
-              value={"Create Spot"}
+              value={"Update Spot"}
             />
           </form>
         </div>
         <>{console.log(images)}</>
       </div>
-
     </>
   )
 }
 
-export default CreatePlace
+export default EditPlace
