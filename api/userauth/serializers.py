@@ -25,6 +25,8 @@ class UserObtainTokenPairSerializer(TokenObtainPairSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
+    image = serializers.SerializerMethodField()
+
     class Meta:
         model = User
         fields = '__all__'
@@ -41,3 +43,7 @@ class UserSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         return user
+
+    def get_image(self, obj):
+        image_url = f'/api/image/user/{obj.id}/'
+        return self.context['request'].build_absolute_uri(image_url)

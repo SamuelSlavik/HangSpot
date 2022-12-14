@@ -310,5 +310,5 @@ class SpotImageDisplaySerializer(serializers.ModelSerializer):
         )
 
     def get_image_url(self, obj):
-        image_url = obj.image.url
+        image_url = f'/api/image/spot/{obj.id}/'
         return self.context['request'].build_absolute_uri(image_url)
