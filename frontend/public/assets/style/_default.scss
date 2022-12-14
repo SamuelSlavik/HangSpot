@@ -31,6 +31,9 @@ h2 {
 
 .content {
   padding: 2% 20% 5% 20%;
+  @media all and (max-width: $break-1){
+    padding: 2% 5% 2% 5%;
+  }
 }
 .text--large {
   font-size: 1.3em;

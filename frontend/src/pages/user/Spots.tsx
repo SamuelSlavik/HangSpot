@@ -30,7 +30,6 @@ function Spots():JSX.Element {
       const res = await axios.delete("http://localhost:8000/api/spots/destroy/" + id + "/",
         {headers: { "Authorization": "Bearer " + userData.token }} )
       fetchSpots().catch(console.error)
-      alert("succesfuly deleted")
     } catch (e:any) {
       console.log(e)
       alert(e.response.data.detail)
@@ -59,7 +58,6 @@ function Spots():JSX.Element {
                <div className={"spot-actions"}>
                  <p><Link to={"/edit/" + id}><SvgIcon component={CreateIcon}/></Link></p>
                  <p><a onClick={() => deleteSpot(id)}><SvgIcon component={DeleteIcon}/></a></p>
-                 <p>3</p>
                </div>
              </div>
            )) :

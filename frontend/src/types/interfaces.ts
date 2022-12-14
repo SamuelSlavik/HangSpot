@@ -24,7 +24,7 @@ export interface Spot {
   }
 }
 
-export interface SpotForTheFuckinDetail {
+export interface SpotDetail {
   id: number,
   name: string,
   latitude: number,
@@ -79,4 +79,10 @@ export interface Achievement {
     quantity: number
     description: number
   }
+}
+
+export interface Image {
+  id: number
+  spot: number
+  image_url: string
 }

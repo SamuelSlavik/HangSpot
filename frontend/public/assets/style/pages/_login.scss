@@ -1,6 +1,9 @@
 .login {
   width: 100%;
   padding: 20% 15% 5% 15%;
+  @media all and (max-width: $break-1){
+    padding: 100% 0 5% 0 ;
+  }
 
   input {
     width: 50%;
@@ -14,6 +17,11 @@
     background-color: $white;
     color: $black;
     @include transition-fast;
+    @media all and (max-width: $break-1){
+      width: 100%;
+      margin-left: 0;
+      padding: 4%;
+    }
 
     &:hover, &:active, &:focus {
       border-color: $orange;
@@ -31,6 +39,11 @@
     background-color: $orange;
     color: $white;
     @include transition-fast;
+    @media all and (max-width: $break-1){
+      width: 100%;
+      padding: 5%;
+      margin-left: 0;
+    }
 
     &:hover, &:active, &:focus {
       border-color: $orange;
