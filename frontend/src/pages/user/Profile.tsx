@@ -76,7 +76,7 @@ function Profile():JSX.Element {
                 <p>{userInfo?.email}</p>
                 <a onClick={logOut}>Log Out</a>
               </div>
-              <Achievements />
+              <Achievements id={userData.id}/>
             </div>
             <Spots />
           </div>

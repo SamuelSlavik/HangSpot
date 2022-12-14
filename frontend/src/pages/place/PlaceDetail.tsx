@@ -5,7 +5,7 @@
 
 import React, {useContext, useEffect, useMemo, useState} from "react"
 import axios from "axios";
-import {useParams} from "react-router-dom"
+import {useParams, Link} from "react-router-dom"
 // modules and structures
 import {Like, SpotDetail, Image} from "../../types/interfaces"
 // google maps api
@@ -30,7 +30,7 @@ function PlaceDetail():JSX.Element {
   const fetchLikes = async () => {
     try {
       const response = await axios.get("http://localhost:8000/api/spots/likes/" + id,
-        { headers: { "Authorization": "Bearer " + userData.token } })
+        userData.token ? { headers: { "Authorization": "Bearer " + userData.token } } : {},)
       setLikes(response.data)
     } catch (e) {
       console.log(e)
@@ -39,7 +39,7 @@ function PlaceDetail():JSX.Element {
   const fetchImages = async () => {
     try {
       const response = await axios.get<Image[]>("http://localhost:8000/api/spots/images/get/" + id,
-        { headers: { "Authorization": "Bearer " + userData.token } })
+        )
       setImagesData(response.data)
     } catch (e) {
       console.log(e)
@@ -68,6 +68,7 @@ function PlaceDetail():JSX.Element {
         { headers: { "Authorization": "Bearer " + userData.token } })
     } catch (e) {
       console.log(e)
+      alert("You have to be logged in to like a post")
     }
     fetchLikes().catch(console.error)
   }
@@ -143,7 +144,7 @@ function PlaceDetail():JSX.Element {
               <div className={"spot__display-flex"}>
                 <div>
                   <p style={{marginBottom: 0}}>Created by:</p>
-                  <p style={{marginTop: 0}} className={"text--large"}><b>{spot?.owner.username}</b></p>
+                  <Link to={"/user/" + spot.owner.id} style={{marginTop: 0}} className={"text--large"}><b>{spot?.owner.username}</b></Link>
                 </div>
                 {
                   !likes?.likes === undefined ?

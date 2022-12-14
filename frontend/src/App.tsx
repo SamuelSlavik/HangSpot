@@ -23,6 +23,7 @@ import EditPlace from "./pages/place/EditPlace";
 import SpotFinder from "./pages/games/SpotFinder";
 // Google maps api
 import {useLoadScript} from "@react-google-maps/api";
+import User from "./pages/user/User";
 
 function App() {
   // User context initialization
@@ -82,6 +83,10 @@ function App() {
                 <Route
                   path={"/profile"}
                   element={<Profile/>}
+                />
+                <Route
+                  path={"/user/:userId"}
+                  element={<User/>}
                 />
                 <Route
                   path={"/games"}

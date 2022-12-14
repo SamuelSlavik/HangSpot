@@ -3,7 +3,7 @@
 * brief: Getting and displaying all achievments of given user
 */
 
-import React, {useContext, useEffect, useState} from "react"
+import React, {useContext, useEffect, useMemo, useState} from "react"
 import axios from "axios";
 // modules and structures
 import {Achievement} from "../../types/interfaces";
@@ -13,15 +13,22 @@ import {SvgIcon} from "@mui/material";
 // global context
 import UserContext from "../../context/userContext";
 
-function Achievements():JSX.Element {
+export interface AchievementsProps {
+  id: number | undefined
+}
+
+
+function Achievements({id}: AchievementsProps):JSX.Element {
   const [achievements, setAchievements] = useState<Achievement[]>()
 
-  const { userData} = useContext(UserContext);
+  const { userData } = useContext(UserContext);
 
   useEffect(() => {
     const fetchAchievements = async () => {
-      const res = await axios.get<Achievement[]>("http://localhost:8000/api/achievements/get/",
-        { headers: { "Authorization": "Bearer " + userData.token } },)
+      const res = await axios.post<Achievement[]>("http://localhost:8000/api/achievements/get/",
+        {id},
+        userData.token ? { headers: { "Authorization": "Bearer " + userData.token } } : {},
+        )
       setAchievements(res.data)
     }
     fetchAchievements().catch(console.error)
