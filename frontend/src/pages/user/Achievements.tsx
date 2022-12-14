@@ -1,15 +1,22 @@
+/*
+* author: Samuel Slávik (xslavi37)
+* brief: Getting and displaying all achievments of given user
+*/
+
 import React, {useContext, useEffect, useState} from "react"
 import axios from "axios";
+// modules and structures
 import {Achievement} from "../../types/interfaces";
-
+// icons
 import StarIcon from '@mui/icons-material/Star';
 import {SvgIcon} from "@mui/material";
+// global context
 import UserContext from "../../context/userContext";
 
 function Achievements():JSX.Element {
   const [achievements, setAchievements] = useState<Achievement[]>()
 
-  const { userData, setUserData } = useContext(UserContext);
+  const { userData} = useContext(UserContext);
 
   useEffect(() => {
     const fetchAchievements = async () => {

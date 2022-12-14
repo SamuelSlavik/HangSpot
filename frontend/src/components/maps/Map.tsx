@@ -1,8 +1,12 @@
+/*
+* author:
+*/
+
 import {useContext, useEffect, useMemo, useState} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 // Google maps api
-import { GoogleMap, Marker } from "@react-google-maps/api";
+import { GoogleMap, Marker, Autocomplete } from "@react-google-maps/api";
 // Structures and modules
 import {Spot} from "../../types/interfaces"
 // Global context

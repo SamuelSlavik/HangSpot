@@ -1,23 +1,22 @@
+/*
+* author: Adam Pekný (xpekny00)
+* brief: Generate user interface for creating new spots
+*/
 import React, {useContext, useEffect, useMemo, useState} from "react"
 import axios from "axios";
-import {useParams, Link, useNavigate} from "react-router-dom"
-
+import {useNavigate} from "react-router-dom"
 import TimeInput from 'react-input-time';
-
+// global context
 import UserContext from "../../context/userContext";
 import ReloadContext from "../../context/reloadContext";
-
-
-
-import {CoordinatesInterface, Spot, Type} from "../../types/interfaces"
-import {GoogleMap, Marker, useLoadScript} from "@react-google-maps/api";
-import Login from "../user/Login";
 import mapContext from "../../context/mapContext";
-import reloadContext from "../../context/reloadContext";
-
-// FUnction begining
+// structures and interface
+import {CoordinatesInterface, Spot, Type} from "../../types/interfaces"
+// google maps api
+import {GoogleMap, Marker} from "@react-google-maps/api";
 
 function CreatePlace():JSX.Element {
+  // state
   const [name, setName] = useState<string>()
   const [coordinates, setCoordinates] = useState<CoordinatesInterface>({lat: undefined, lng: undefined})
   const [spot_type, setSpot_Type] = useState<string>()
@@ -33,25 +32,18 @@ function CreatePlace():JSX.Element {
   const [close_time, setClose_time] = useState<string>("0:00")
   const [expected_duration, setExpected_duration] = useState<number>()
   const [path_description, setPath_description] = useState<string>()
-
+  const [allTypes, setAllTypes] = useState<Type[]>([])
+  // global state
   const {isLoaded} = useContext(mapContext)
-
   const {forceReload, setForceReload} = useContext(ReloadContext)
+  const {userData} = useContext(UserContext)
 
   const navigate = useNavigate();
 
-  const [allTypes, setAllTypes] = useState<Type[]>([])
-
   const latitude = useMemo(() => (coordinates.lat), [coordinates])
   const longitude = useMemo(() => (coordinates.lng), [coordinates])
-
-  const {userData, setUserData} = useContext(UserContext)
-
   const owner = useMemo(() => (userData.id), [userData])
-
   const newMarker = useMemo(() => ({ lat: (coordinates.lat ? coordinates.lat : 0) , lng: (coordinates.lng ? coordinates.lng : 0) }), [coordinates]);
-
-  const [spot, setSpot] = useState<Spot>()
 
   useEffect(() => {
     const fetchTypes = async () => {
@@ -64,20 +56,6 @@ function CreatePlace():JSX.Element {
     }
     fetchTypes().catch(console.error)
   }, [])
-
-  const styles = useMemo(() => ({
-    styles: [
-      {
-        featureType: "poi.business",
-        stylers: [{visibility: "off"}]
-      },
-      {
-        featureType: "transit",
-        elementType: "labels.icon",
-        stylers: [{visibility: "off"}]
-      }
-    ]
-  }), []);
 
   const submit = async (e: any) => {
     e.preventDefault()
@@ -140,6 +118,21 @@ function CreatePlace():JSX.Element {
       alert("There was an error during creating new spot, please try it again")
     }
   }
+
+  // google maps api
+  const styles = useMemo(() => ({
+    styles: [
+      {
+        featureType: "poi.business",
+        stylers: [{visibility: "off"}]
+      },
+      {
+        featureType: "transit",
+        elementType: "labels.icon",
+        stylers: [{visibility: "off"}]
+      }
+    ]
+  }), []);
 
   return (
     <>

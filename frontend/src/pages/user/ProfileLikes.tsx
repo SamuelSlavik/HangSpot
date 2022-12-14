@@ -1,18 +1,26 @@
+/*
+* author: Samuel Slávik (xslavi37)
+* brief: Handling of liking posts
+*/
+
 import React, {useContext, useEffect, useState} from "react"
 import axios from "axios";
 import {Like} from "../../types/interfaces";
+// global context
 import UserContext from "../../context/userContext";
-
+// icons
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import {SvgIcon} from "@mui/material";
 
+// function properties
 export interface ProfileLikesProps {
   id: number,
 };
 
 function ProfileLikes({id}: ProfileLikesProps):JSX.Element {
+  // state
   const [likes, setLikes] = useState<Like>()
-
+  // global context
   const { userData, setUserData } = useContext(UserContext);
 
   useEffect(() => {
@@ -26,7 +34,6 @@ function ProfileLikes({id}: ProfileLikesProps):JSX.Element {
       }
     }
     fetchLikes()
-
   }, [])
 
   return (
