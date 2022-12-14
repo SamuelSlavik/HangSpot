@@ -4,7 +4,7 @@
 */
 import React, {useContext, useEffect, useMemo, useState} from "react"
 import axios from "axios";
-import {useNavigate} from "react-router-dom"
+import {useNavigate, Link} from "react-router-dom"
 import TimeInput from 'react-input-time';
 // global context
 import UserContext from "../../context/userContext";
@@ -14,6 +14,8 @@ import mapContext from "../../context/mapContext";
 import {CoordinatesInterface, Spot, Type} from "../../types/interfaces"
 // google maps api
 import {GoogleMap, Marker} from "@react-google-maps/api";
+import {SvgIcon} from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 function CreatePlace():JSX.Element {
   // state
@@ -156,6 +158,9 @@ function CreatePlace():JSX.Element {
           }
         </div>
         <div className={"spot__content"}>
+          <div style={{marginBottom: "5%"}}>
+            <Link to={"/"} ><SvgIcon component={ArrowBackIcon} fontSize={"large"}/></Link>
+          </div>
           <p>Latitude: {coordinates.lat ? coordinates.lat : ""}</p>
           <p>Longitude: {coordinates.lng ? coordinates.lng : ""}</p>
           <br/>

@@ -13,6 +13,7 @@ import {GoogleMap, Marker, useLoadScript} from "@react-google-maps/api";
 // material icons
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import {SvgIcon} from "@mui/material";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 // global context
 import UserContext from "../../context/userContext";
 
@@ -124,6 +125,9 @@ function PlaceDetail():JSX.Element {
               Loading data...
             </div> :
             <>
+              <div style={{marginBottom: "5%"}}>
+                <Link to={"/"} ><SvgIcon component={ArrowBackIcon} fontSize={"large"}/></Link>
+              </div>
               <div className={"spot__header-wrapper"}>
                 <h2>{spot?.name}</h2>
                 {

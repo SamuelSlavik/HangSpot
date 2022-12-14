@@ -16,7 +16,6 @@ import Navigation from "./components/Navigation";
 import Homepage from "./pages/homepage/Homepage";
 import Login from "./pages/user/Login";
 import Profile from "./pages/user/Profile";
-import GamesMenu from "./pages/games/GamesMenu";
 import PlaceDetail from "./pages/place/PlaceDetail";
 import CreatePlace from "./pages/place/CreatePlace";
 import EditPlace from "./pages/place/EditPlace";
@@ -87,10 +86,6 @@ function App() {
                 <Route
                   path={"/user/:userId"}
                   element={<User/>}
-                />
-                <Route
-                  path={"/games"}
-                  element={<GamesMenu/>}
                 />
                 <Route
                   path={"/detail/:id"}
