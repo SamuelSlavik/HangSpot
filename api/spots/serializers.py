@@ -309,6 +309,6 @@ class SpotImageDisplaySerializer(serializers.ModelSerializer):
             'image_url',
         )
 
-    @staticmethod
-    def get_image_url(obj):
-        return obj.image.path
+    def get_image_url(self, obj):
+        image_url = obj.image.url
+        return self.context['request'].build_absolute_uri(image_url)
