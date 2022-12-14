@@ -1,81 +1,108 @@
+from django.db.models import Count
+
 from rest_framework.exceptions import NotAuthenticated, NotFound
 
 from userauth.models import User
+from spots.models import SpotCommon
 
 
-class Achievements:
+def get_achievements(user_id):
+    try:
+        user = User.objects.get(id=user_id)
+    except User.DoesNotExist:
+        raise NotFound(detail='User not found')
+    achievements = list()
+    achievements += _get_likes_achievements(user)
+    achievements += _get_displays_achievements(user)
+    achievements += _get_created_achievements(user)
+    achieved = _parse_achievements(achievements)
+    return achieved
 
-    def get_achievements(self, user_id):
-        try:
-            user = User.objects.get(id=user_id)
-        except User.DoesNotExist:
-            raise NotFound(detail='User not found')
 
-        self.Likes(user.likes.count())
-        achievements = self.Displays(user.displays.count()).current_tiers
-        return achievements
+def _parse_achievements(achievements):
+    achieved = list()
+    for achievement in achievements:
+        skip = False
+        for idx, value in enumerate(achievement['tiers']):
+            if value > achievement['comparator']:
+                achieved.append({
+                    'current_tier': idx,
+                    'total_tiers': len(achievement['tiers']),
+                    'goal': {
+                        'progress': achievement['comparator'],
+                        'quantity': value,
+                        'description': achievement['description'],
+                    },
+                })
+                skip = True
+                break
+        if not skip:
+            achieved.append({
+                'current_tier': len(achievement['tiers']),
+                'total_tiers': len(achievement['tiers']),
+                'goal': {
+                    'progress': achievement['comparator'],
+                    'quantity': achievement['tiers'][-1],
+                    'description': achievement['description'],
+                },
+            })
+    return achieved
 
-    def reset(self):
-        self.Achievement.achievements = list()
-        self.Achievement.current_tiers = list()
 
-    class Achievement:
-        achievements = list()
-        comparator = None
-        current_tiers = list()
+def _get_likes_achievements(user):
+    achievements = [
+        {
+            'description': 'Total likes given',
+            'comparator': user.likes.count(),
+            'tiers': [10, 20, 50, 100, 150]
+        },
+        {
+            'description': 'One spot likes earned',
+            'comparator': _get_user_most_liked_spot(user).like_count,
+            'tiers': [5, 10, 20]
+        },
+    ]
+    return achievements
 
-        def __init__(self, comparator):
-            self.comparator = comparator
-            self.get_tiers()
 
-        def get_tiers(self):
-            for achievement in self.achievements:
-                skip = False
-                for idx, value in enumerate(achievement['tiers']):
-                    if value > self.comparator:
-                        self.current_tiers.append({
-                            'current_tier': idx,
-                            'total_tiers': len(achievement['tiers']),
-                            'goal': {
-                                'progress': self.comparator,
-                                'quantity': value,
-                                'description': achievement['description'],
-                            },
-                        })
-                        skip = True
-                        break
-                if not skip:
-                    self.current_tiers.append({
-                        'current_tier': len(achievement['tiers']),
-                        'total_tiers': len(achievement['tiers']),
-                        'goal': {
-                            'progress': self.comparator,
-                            'quantity': achievement['tiers'][-1],
-                            'description': achievement['description'],
-                        },
-                    })
+def _get_user_most_liked_spot(user):
+    spots_qs = SpotCommon.objects.annotate(like_count=Count('likes')).filter(owner=user).order_by('-like_count')
+    return spots_qs[0]
 
-    class Likes(Achievement):
-        achievements = [
-            {
-                'description': 'Total likes earned',
-                'tiers': [10, 20, 50, 100, 150]
-            },
-            {
-                'description': 'One spot likes earned',
-                'tiers': [5, 10, 20]
-            },
-        ]
 
-    class Displays(Achievement):
-        achievements = [
-            {
-                'description': 'Total displays earned',
-                'tiers': [25, 50, 100]
-            },
-            {
-                'description': 'One spot displays earned',
-                'tiers': [10, 25, 50, 100]
-            },
-        ]
+def _get_displays_achievements(user):
+    achievements = [
+        {
+            'description': 'Total spots viewed',
+            'comparator': user.displays.count(),
+            'tiers': [25, 50, 100]
+        },
+        {
+            'description': 'One spot earned views',
+            'comparator': _get_user_most_displayed_spot(user).display_count,
+            'tiers': [10, 25, 50, 100]
+        },
+    ]
+    return achievements
+
+
+def _get_user_most_displayed_spot(user):
+    spots_qs = SpotCommon.objects.annotate(display_count=Count('displays')).filter(owner=user).order_by('-display_count')
+    return spots_qs[0]
+
+
+def _get_created_achievements(user):
+    achievements = [
+        {
+            'description': 'Total spots created',
+            'comparator': _get_user_spots(user).count(),
+            'tiers': [5, 10, 20]
+        },
+    ]
+    return achievements
+
+
+def _get_user_spots(user):
+    spots_qs = SpotCommon.objects.filter(owner=user)
+    return spots_qs
 
