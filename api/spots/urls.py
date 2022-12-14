@@ -14,7 +14,8 @@ from .views import (
     UploadSpotImagesView,
     UpdateSpotImagesView,
     DestroySpotImagesView,
-    DestroySpotImageView
+    DestroySpotImageView,
+    DisplayFirstSpotImageView
 )
 
 urlpatterns = [
@@ -29,6 +30,7 @@ urlpatterns = [
     path('reports/<str:pk>/', ReportSpotView.as_view(), name='spots_report_give_get'),
     path('displays/<str:pk>/', DisplaySpotView.as_view(), name='spots_display_give_get'),
     path('images/get/<str:pk>/', DisplaySpotImagesView.as_view(), name='spots_display_images'),
+    path('image/get/<str:pk>/', DisplayFirstSpotImageView.as_view(), name='spots_display_image'),
     path('images/upload/<str:pk>/', UploadSpotImagesView.as_view(), name='spots_upload_images'),
     path('images/update/<str:pk>/', UpdateSpotImagesView.as_view(), name='spots_update_images'),
     path('images/destroy/<str:spot>/', DestroySpotImagesView.as_view(), name='spots_destroy_images'),
