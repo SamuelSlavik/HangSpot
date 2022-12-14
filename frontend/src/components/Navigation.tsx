@@ -1,3 +1,8 @@
+/*
+* author: Samuel Slávik (xslavi37)
+* brief: navigation displayed on the top of the web
+ */
+
 import React, {useContext} from "react";
 import {NavLink} from "react-router-dom";
 // ICONS //

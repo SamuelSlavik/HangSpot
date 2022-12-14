@@ -1,3 +1,8 @@
+/*
+* author: Jakub Kontrík (xkontr00)
+* brief: Sidepanel with all categories of spots that handles api calls to get filtered spots
+ */
+
 import React, {useState, useEffect, useContext} from "react";
 import axios from "axios";
 // Structures and modules

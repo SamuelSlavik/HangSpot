@@ -69,7 +69,7 @@ function Profile():JSX.Element {
               <div className={"profile__info"}>
                 {
                   userInfo?.image ?
-                    <img src={userInfo.image} alt="Profile image"/> :
+                    <img src={profilePhoto} alt="Profile image"/> :
                     <img alt={"Profile Image"} src={profilePhoto}/>
                 }
                 <h2>{userInfo?.username}</h2>

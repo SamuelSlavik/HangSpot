@@ -1,5 +1,6 @@
 /*
-* author:
+* author: Samuel Slávik (xslavi37)
+* brief: Map component shown in homepage
 */
 
 import {useContext, useEffect, useMemo, useState} from "react";

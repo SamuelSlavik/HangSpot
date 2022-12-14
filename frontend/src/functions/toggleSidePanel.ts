@@ -1,3 +1,8 @@
+/*
+* author: Jakub Kontrík (xslavi37)
+* brief: Handling of displaying  sidepanel
+ */
+
 export function toggleSidePanelOn() {
   let container = document.getElementById("sidePanel")
 
