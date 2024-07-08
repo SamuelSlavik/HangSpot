@@ -18,8 +18,3 @@ School project for ITU at Brno University of Technology. Fully functional web ap
 - Django
 
 <br/>
-
-## Setup 
-1. Clone the repository
-2. Run ```npm install```
-3. Start eh app with ```npm start```
